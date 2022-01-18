@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import NavBar, { TNavLink } from "../../components/NavBar";
+import Navbar, { TNavLink } from "../../components/Navbar";
 import { MaxPageContainer, PageContainer } from "../../components/styled";
 import ContainerAppRouter from "./ContainerAppRouter";
 
@@ -13,7 +13,7 @@ const navlinks: TNavLink[] = [
 function ContainerApp() {
     return (
         <Container>
-            <NavBar links={navlinks} />
+            <Navbar links={navlinks} />
             <MaxPageContainer>
                 <ContainerAppRouter />
             </MaxPageContainer>
