@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-// @ts-ignore
-import { ReactComponent as PageBackSvg } from "../assets/svgs/pageBackButton.svg";
-
 export const PageContainer = styled.div`
     height: 100%;
 `;
@@ -55,11 +52,6 @@ export const MainButton = styled.button`
     &:hover {
         background-color: #dbdbdb;
     }
-`;
-
-export const PageBackButton = styled(PageBackSvg)`
-    cursor: pointer;
-    height: 17px;
 `;
 
 export const Label = styled.label`
