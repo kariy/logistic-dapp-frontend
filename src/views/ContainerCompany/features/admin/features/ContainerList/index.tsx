@@ -1,15 +1,31 @@
-import { Link, NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import {
     MainButton,
     PageHeader,
     PageTitle,
 } from "../../../../../../components/styled";
 import ItemList from "../../../../../components/ItemList";
-
-const ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+import { useContainerContract } from "../../../../providers/ContainerContractProvider";
 
 function ContainerListPage(props: any) {
+    const [ids, setIds] = useState<number[]>([]);
+    const container = useContainerContract();
+
+    useEffect(() => {
+        container.methods
+            .getTotalContainers()
+            .call()
+            .then((total: number) => {
+                const newIds = [];
+
+                for (let i = 1; i <= total; i++) newIds.push(i);
+
+                setIds(newIds);
+            });
+    }, [container]);
+
     return (
         <div>
             <PageHeader>
