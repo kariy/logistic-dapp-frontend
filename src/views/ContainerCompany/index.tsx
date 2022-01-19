@@ -1,19 +1,16 @@
 import styled from "styled-components";
-import Navbar, { TNavLink } from "../../components/Navbar";
+
 import { MaxPageContainer, PageContainer } from "../../components/styled";
+import ContainerNavbar from "./components/ContainerNavbar";
 import ContainerAppRouter from "./ContainerAppRouter";
+import ContainerAppProvider from "./providers";
 
 const Container = styled(PageContainer)``;
-
-const navlinks: TNavLink[] = [
-    { name: "Admin", path: "/admin" },
-    { name: "Track", path: "/track" },
-];
 
 function ContainerApp() {
     return (
         <Container>
-            <Navbar links={navlinks} />
+            <ContainerNavbar />
             <MaxPageContainer>
                 <ContainerAppRouter />
             </MaxPageContainer>
@@ -21,4 +18,12 @@ function ContainerApp() {
     );
 }
 
-export default ContainerApp;
+function ContainerAppWithContext() {
+    return (
+        <ContainerAppProvider>
+            <ContainerApp />
+        </ContainerAppProvider>
+    );
+}
+
+export default ContainerAppWithContext;

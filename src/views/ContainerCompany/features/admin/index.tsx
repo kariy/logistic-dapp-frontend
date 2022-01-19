@@ -1,14 +1,44 @@
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import styled from "styled-components";
+
+import ConnectWallet from "../../../../components/ConnectWallet";
+import { useUser } from "../../../../providers/UserProvider";
+import ContainerListPage from "./features/ContainerList";
+import NewContainerPage from "./features/NewContainer";
 
 const Container = styled.div``;
 
 function Admin(props: any) {
+    const user = useUser();
+
     return (
         <Container>
-            admin
-            <Route path={`${props.match.path}/containers/new`} />
-            <Route path={`${props.match.path}/containers/:id`} />
+            {user?.address ? (
+                <>
+                    <Route path={`${props.match.path}/containers/:id`} />
+
+                    <Route
+                        path={`${props.match.path}/containers/new`}
+                        component={NewContainerPage}
+                    />
+
+                    <Route
+                        exact
+                        path={`${props.match.path}/containers`}
+                        component={ContainerListPage}
+                    />
+
+                    <Route
+                        exact
+                        path={`${props.match.path}`}
+                        render={() => (
+                            <Redirect to={`${props.match.path}/containers`} />
+                        )}
+                    />
+                </>
+            ) : (
+                <ConnectWallet />
+            )}
         </Container>
     );
 }

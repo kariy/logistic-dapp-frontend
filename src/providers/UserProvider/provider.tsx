@@ -7,8 +7,12 @@ export const UserProvider: React.FC = function ({ children }) {
     const web3 = useWeb3();
 
     useEffect(() => {
-        web3?.ethereum.on("accountsChanged", function (accounts: any) {
-            if (accounts[0]) setUser(accounts[0]);
+        web3?.eth.getAccounts().then((accounts) => {
+            setUser(accounts[0] ? accounts[0] : null);
+        });
+
+        window.ethereum.on("accountsChanged", function (accounts: string[]) {
+            setUser(accounts[0] ? accounts[0] : null);
         });
     }, [web3]);
 

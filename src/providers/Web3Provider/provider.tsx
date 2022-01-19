@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import Web3 from "web3";
 import { Web3Context } from ".";
 
 declare global {
@@ -7,27 +7,8 @@ declare global {
     }
 }
 
-const ethereum = window.ethereum;
-const provider = new ethers.providers.Web3Provider(ethereum);
-const signer = provider.getSigner();
-
-const getAccounts = function () {
-    return ethereum.request({
-        method: "eth_requestAccounts",
-    });
-};
-
 export const Web3Provider: React.FC = function ({ children }) {
-    return (
-        <Web3Context.Provider
-            value={{
-                ethereum: ethereum,
-                provider: provider,
-                signer: signer,
-                getAccounts: getAccounts,
-            }}
-        >
-            {children}
-        </Web3Context.Provider>
-    );
+    const web3 = new Web3(Web3.givenProvider);
+
+    return <Web3Context.Provider value={web3}>{children}</Web3Context.Provider>;
 };
