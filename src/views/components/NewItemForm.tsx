@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm, UseFormReset } from "react-hook-form";
 import styled from "styled-components";
 import {
     Input,
@@ -59,19 +59,26 @@ export interface TNewParcelFieldValues extends TNewItemFieldValues {
     parcelPayee: string;
 }
 
+export type NewItemSubmitHandler = (
+    data: any,
+    reset: UseFormReset<FieldValues>
+) => void;
+
 interface Props {
     itemType: ItemType;
     formTitle: string;
-    onSubmit: any;
+    onSubmit: NewItemSubmitHandler;
 }
 
 function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm();
+
+    const submitCallback = (data: any) => onSubmit(data, reset);
 
     return (
         <Container>
             <SectionHeader>{formTitle}</SectionHeader>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(submitCallback)}>
                 <fieldset>
                     <Label as="legend">Shipment type</Label>
 
@@ -122,7 +129,6 @@ function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
                         defaultValue={""}
                     >
                         <option value="">Select a country</option>
-                        {}
                         <option value="1">Malaysia</option>
                         <option value="2">Singapore</option>
                         <option value="3">Thailand</option>
