@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import ConnectWallet from "../../../../components/ConnectWallet";
 import { useUser } from "../../../../providers/UserProvider";
+import ContainerPage from "./features/Container";
 import ContainerListPage from "./features/ContainerList";
 import NewContainerPage from "./features/NewContainer";
 
@@ -15,7 +16,10 @@ function Admin(props: any) {
         <Container>
             {user?.address ? (
                 <>
-                    <Route path={`${props.match.path}/containers/:id`} />
+                    <Route
+                        path={`${props.match.path}/containers/:id`}
+                        component={ContainerPage}
+                    />
 
                     <Route
                         path={`${props.match.path}/containers/new`}
