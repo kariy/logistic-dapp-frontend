@@ -17,7 +17,7 @@ function Admin(props: any) {
             {user?.address ? (
                 <>
                     <Route
-                        path={`${props.match.path}/containers/:id`}
+                        path={`${props.match.path}/containers/:id(\\d+)`}
                         component={ContainerPage}
                     />
 
