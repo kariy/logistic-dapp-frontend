@@ -6,12 +6,12 @@ import {
     PageHeader,
     PageTitle,
 } from "../../../../components/styled";
+import { useContract } from "../../../../providers/ContainerContractProvider";
 import ItemList from "../../../components/ItemList";
-import { useContainerContract } from "../../providers/ContainerContractProvider";
 
 function ContainerListPage(props: any) {
     const [ids, setIds] = useState<number[]>([]);
-    const container = useContainerContract();
+    const container = useContract()?.container;
 
     useEffect(() => {
         container.methods

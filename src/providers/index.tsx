@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ContractProvider } from "./ContainerContractProvider";
 
 import { ThemeProvider } from "./ThemeProvider";
 import { UserProvider } from "./UserProvider";
@@ -9,7 +10,9 @@ const MainProvider: React.FC = function ({ children }) {
         <ThemeProvider>
             <QueryClientProvider client={new QueryClient()}>
                 <Web3Provider>
-                    <UserProvider>{children}</UserProvider>
+                    <ContractProvider>
+                        <UserProvider>{children}</UserProvider>
+                    </ContractProvider>
                 </Web3Provider>
             </QueryClientProvider>
         </ThemeProvider>

@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import { PageHeader, SectionHeader } from "../../../../components/styled";
+import { SectionHeader } from "../../../../components/styled";
 
 import ItemDetails from "../../../components/ItemDetails";
-import { useContainerContract } from "../../providers/ContainerContractProvider";
 
 // @ts-ignore
 import { ReactComponent as UpArrowSvg } from "../../../../assets/svgs/up-right-corner-arrow.svg";
 
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import PageBackButton from "../../../components/PageBackButton";
 import { Container } from "../../../../types";
+import PageBackHeader from "../../../../components/PageBackHeader";
+import { useContract } from "../../../../providers/ContainerContractProvider";
 
 const ContainerStyled = styled.div`
     ${SectionHeader} {
@@ -50,7 +50,7 @@ const ContentWrapper = styled.div`
 // priority : low
 
 function ContainerPage(props: any) {
-    const contract = useContainerContract();
+    const contract = useContract()?.container;
 
     const { data, isLoading } = useQuery<Container>(
         "containerData",
@@ -60,9 +60,7 @@ function ContainerPage(props: any) {
 
     return (
         <ContainerStyled>
-            <PageHeader>
-                <PageBackButton />
-            </PageHeader>
+            <PageBackHeader />
             <SectionHeader>
                 <span>Container {props.match.params.id}</span>
 
