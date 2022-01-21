@@ -6,7 +6,7 @@ import {
     PageHeader,
     PageTitle,
 } from "../../../../components/styled";
-import { useContract } from "../../../../providers/ContainerContractProvider";
+import { useContract } from "../../../../providers/ContractProvider";
 import ItemList from "../../../components/ItemList";
 
 function ContainerListPage(props: any) {

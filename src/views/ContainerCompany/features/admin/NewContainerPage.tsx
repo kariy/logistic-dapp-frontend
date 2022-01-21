@@ -1,4 +1,5 @@
 import { PageHeader } from "../../../../components/styled";
+import { useContract } from "../../../../providers/ContractProvider";
 import { useUser } from "../../../../providers/UserProvider";
 
 import NewItemForm, {
@@ -6,11 +7,10 @@ import NewItemForm, {
     TNewContainerFieldValues,
 } from "../../../components/NewItemForm";
 import PageBackButton from "../../../components/PageBackButton";
-import { useContainerContract } from "../../providers/ContainerContractProvider";
 
 function NewContainerPage() {
     const user = useUser();
-    const container = useContainerContract();
+    const container = useContract()?.container;
 
     const onSubmit: NewItemSubmitHandler = function (
         data: TNewContainerFieldValues,

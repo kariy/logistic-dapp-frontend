@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ContractProvider } from "./ContainerContractProvider";
+import { ContractProvider } from "./ContractProvider";
 
 import { ThemeProvider } from "./ThemeProvider";
 import { UserProvider } from "./UserProvider";

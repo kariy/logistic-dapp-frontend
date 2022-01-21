@@ -2,10 +2,10 @@ import { ContractContext } from ".";
 import { useWeb3 } from "../Web3Provider";
 
 const courierAddr = "0x0CDe3E1459DCD4d6915960D4b3D9CC00D065D9Ea";
-const courierAbi = require("../../../abi/ContainerCompany.json");
+const courierAbi = require("../../assets/abi/ContainerCompany.json");
 
 const containerAddr = "0x0CDe3E1459DCD4d6915960D4b3D9CC00D065D9Ea";
-const containerAbi = require("../../../abi/ContainerCompany.json");
+const containerAbi = require("../../assets/abi/ContainerCompany.json");
 
 export const ContractProvider: React.FC = function ({ children }) {
     const web3 = useWeb3();
