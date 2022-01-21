@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { PageHeader, SectionHeader } from "../../../../../../components/styled";
-import { Container } from "../../../../../../types";
-import ItemDetails from "../../../../../components/ItemDetails";
-import { useContainerContract } from "../../../../providers/ContainerContractProvider";
+import { PageHeader, SectionHeader } from "../../../../components/styled";
+
+import ItemDetails from "../../../components/ItemDetails";
+import { useContainerContract } from "../../providers/ContainerContractProvider";
 
 // @ts-ignore
-import { ReactComponent as UpArrowSvg } from "../../../../../../assets/svgs/up-right-corner-arrow.svg";
-import PageBackButton from "../../../../../components/PageBackButton";
+import { ReactComponent as UpArrowSvg } from "../../../../assets/svgs/up-right-corner-arrow.svg";
+
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import PageBackButton from "../../../components/PageBackButton";
+import { Container } from "../../../../types";
 
 const ContainerStyled = styled.div`
     ${SectionHeader} {
@@ -41,11 +43,19 @@ const ContentWrapper = styled.div`
     justify-content: center;
 `;
 
+// bug : rendering issue
+// bug found on : 2PM 20/1/2022
+// desc : rendering multiple times
+// cause : unknown
+// priority : low
+
 function ContainerPage(props: any) {
     const contract = useContainerContract();
 
-    const { data, isLoading } = useQuery<Container>("containerData", () =>
-        contract.methods.getContainerOf(props.match.params.id).call()
+    const { data, isLoading } = useQuery<Container>(
+        "containerData",
+        () => contract.methods.getContainerOf(props.match.params.id).call(),
+        { refetchOnWindowFocus: false }
     );
 
     return (
@@ -63,7 +73,7 @@ function ContainerPage(props: any) {
             </SectionHeader>
             <ContentWrapper>
                 {data ? (
-                    <ItemDetails item={data} />
+                    <ItemDetails item={data} match={props.match} />
                 ) : isLoading ? (
                     <div>Loading</div>
                 ) : (

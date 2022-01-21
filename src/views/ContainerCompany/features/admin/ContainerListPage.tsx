@@ -5,9 +5,9 @@ import {
     MainButton,
     PageHeader,
     PageTitle,
-} from "../../../../../../components/styled";
-import ItemList from "../../../../../components/ItemList";
-import { useContainerContract } from "../../../../providers/ContainerContractProvider";
+} from "../../../../components/styled";
+import ItemList from "../../../components/ItemList";
+import { useContainerContract } from "../../providers/ContainerContractProvider";
 
 function ContainerListPage(props: any) {
     const [ids, setIds] = useState<number[]>([]);

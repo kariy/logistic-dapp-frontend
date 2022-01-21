@@ -1,11 +1,12 @@
-import { PageHeader } from "../../../../../../components/styled";
-import { useUser } from "../../../../../../providers/UserProvider";
+import { PageHeader } from "../../../../components/styled";
+import { useUser } from "../../../../providers/UserProvider";
+
 import NewItemForm, {
     NewItemSubmitHandler,
     TNewContainerFieldValues,
-} from "../../../../../components/NewItemForm";
-import PageBackButton from "../../../../../components/PageBackButton";
-import { useContainerContract } from "../../../../providers/ContainerContractProvider";
+} from "../../../components/NewItemForm";
+import PageBackButton from "../../../components/PageBackButton";
+import { useContainerContract } from "../../providers/ContainerContractProvider";
 
 function NewContainerPage() {
     const user = useUser();

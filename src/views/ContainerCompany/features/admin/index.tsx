@@ -1,11 +1,12 @@
 import { Redirect, Route } from "react-router-dom";
 import styled from "styled-components";
 
-import ConnectWallet from "../../../../components/ConnectWallet";
 import { useUser } from "../../../../providers/UserProvider";
-import ContainerPage from "./features/Container";
-import ContainerListPage from "./features/ContainerList";
-import NewContainerPage from "./features/NewContainer";
+import ConnectWallet from "../../../../components/ConnectWallet";
+import ContainerPage from "./ContainerPage";
+import ContainerListPage from "./ContainerListPage";
+import NewContainerPage from "./NewContainerPage";
+import ContainerRouter from "./ContainerRouter";
 
 const Container = styled.div``;
 
@@ -31,6 +32,8 @@ function Admin(props: any) {
                         path={`${props.match.path}/containers`}
                         component={ContainerListPage}
                     />
+
+                    <ContainerRouter match={props.match} />
 
                     <Route
                         exact
