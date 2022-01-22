@@ -1,33 +1,29 @@
 import styled from "styled-components";
-import { SectionHeader } from "../../../../components/styled";
 
 import ItemDetails from "../../../components/ItemDetails";
 
 // @ts-ignore
 import { ReactComponent as UpArrowSvg } from "../../../../assets/svgs/up-right-corner-arrow.svg";
 
-import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import { Container } from "../../../../types";
-import PageBackHeader from "../../../../components/PageBackHeader";
-import { useContract } from "../../../../providers/ContainerContractProvider";
+import { useContract } from "../../../../providers/ContractProvider";
+import SubPage from "../../../components/SubPage";
+import QueryRenderProp from "../../../../components/QueryRenderProp";
+import { useCallback } from "react";
 
-const ContainerStyled = styled.div`
-    ${SectionHeader} {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
+const CustomHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        & > :nth-child(2) {
-            text-transform: none;
-            color: inherit;
-            font-weight: 400;
-            font-size: 0.75em;
+    & > :nth-child(2) {
+        text-transform: none;
+        color: inherit;
+        font-weight: 400;
+        font-size: 0.75em;
 
-            &:hover {
-                text-decoration: underline;
-            }
+        &:hover {
+            text-decoration: underline;
         }
     }
 `;
@@ -43,42 +39,44 @@ const ContentWrapper = styled.div`
     justify-content: center;
 `;
 
-// bug : rendering issue
-// bug found on : 2PM 20/1/2022
-// desc : rendering multiple times
-// cause : unknown
-// priority : low
-
 function ContainerPage(props: any) {
     const contract = useContract()?.container;
 
-    const { data, isLoading } = useQuery<Container>(
-        "containerData",
+    const queryFn = useCallback(
         () => contract.methods.getContainerOf(props.match.params.id).call(),
-        { refetchOnWindowFocus: false }
+        [contract, props]
     );
 
     return (
-        <ContainerStyled>
-            <PageBackHeader />
-            <SectionHeader>
-                <span>Container {props.match.params.id}</span>
-
-                <Link to={`/container-app/track/${props.match.params.id}`}>
-                    View progress
-                    <ProgressArrow />
-                </Link>
-            </SectionHeader>
-            <ContentWrapper>
-                {data ? (
-                    <ItemDetails item={data} match={props.match} />
-                ) : isLoading ? (
-                    <div>Loading</div>
-                ) : (
-                    <div>Not found</div>
-                )}
-            </ContentWrapper>
-        </ContainerStyled>
+        <QueryRenderProp
+            queryFn={queryFn}
+            queryKey="containerData"
+            render={({ data, isLoading }) => (
+                <SubPage
+                    header={
+                        <CustomHeader>
+                            <span>Container {props.match.params.id}</span>
+                            <Link
+                                to={`/container-app/track/${props.match.params.id}`}
+                            >
+                                View progress
+                                <ProgressArrow />
+                            </Link>
+                        </CustomHeader>
+                    }
+                >
+                    <ContentWrapper>
+                        {data ? (
+                            <ItemDetails item={data} match={props.match} />
+                        ) : isLoading ? (
+                            <div>Loading</div>
+                        ) : (
+                            <div>Not found</div>
+                        )}
+                    </ContentWrapper>
+                </SubPage>
+            )}
+        />
     );
 }
 
