@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import {
-    MainButton,
-    PageHeader,
-    PageTitle,
-} from "../../../../components/styled";
+import { MainButton } from "../../../../components/styled";
 import { useContract } from "../../../../providers/ContractProvider";
 import ItemList from "../../../components/ItemList";
+import MainPage from "../../../components/MainPage";
 
 function ContainerListPage(props: any) {
     const [ids, setIds] = useState<number[]>([]);
@@ -27,17 +24,13 @@ function ContainerListPage(props: any) {
     }, [container]);
 
     return (
-        <div>
-            <PageHeader>
-                <PageTitle>Container List</PageTitle>
-            </PageHeader>
-
+        <MainPage title="Container List">
             <ItemList itemIds={ids} itemType="Container" />
 
             <Link to={`${props.match.path}/new`}>
                 <MainButton>Create new container</MainButton>
             </Link>
-        </div>
+        </MainPage>
     );
 }
 
