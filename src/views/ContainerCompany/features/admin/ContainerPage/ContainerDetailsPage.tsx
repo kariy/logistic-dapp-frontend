@@ -1,15 +1,16 @@
-import styled from "styled-components";
-
-import ItemDetails from "../../../components/ItemDetails";
-
-// @ts-ignore
-import { ReactComponent as UpArrowSvg } from "../../../../assets/svgs/up-right-corner-arrow.svg";
+import ItemDetails from "../../../../components/ItemDetails";
 
 import { Link } from "react-router-dom";
-import { useContract } from "../../../../providers/ContractProvider";
-import SubPage from "../../../components/SubPage";
-import QueryRenderProp from "../../../../components/QueryRenderProp";
+import { useContract } from "../../../../../providers/ContractProvider";
+import SubPage from "../../../../components/SubPage";
+import QueryRenderProp from "../../../../../components/QueryRenderProp";
 import { useCallback } from "react";
+
+import { Container } from "../../../../../types";
+import styled from "styled-components";
+
+// @ts-ignore
+import { ReactComponent as UpArrowSvg } from "../../../../../assets/svgs/up-right-corner-arrow.svg";
 
 const CustomHeader = styled.div`
     display: flex;
@@ -39,7 +40,7 @@ const ContentWrapper = styled.div`
     justify-content: center;
 `;
 
-function ContainerPage(props: any) {
+function ContainerDetailsPage(props: any) {
     const contract = useContract()?.container;
 
     const queryFn = useCallback(
@@ -48,7 +49,7 @@ function ContainerPage(props: any) {
     );
 
     return (
-        <QueryRenderProp
+        <QueryRenderProp<Container>
             queryFn={queryFn}
             queryKey="containerData"
             render={({ data, isLoading }) => (
@@ -80,4 +81,4 @@ function ContainerPage(props: any) {
     );
 }
 
-export default ContainerPage;
+export default ContainerDetailsPage;
