@@ -52,7 +52,7 @@ function ContainerDetailsPage(props: any) {
         <QueryRenderProp<Container>
             queryFn={queryFn}
             queryKey="containerData"
-            render={({ data, isLoading }) => (
+            render={({ data, isLoading, isError }) => (
                 <SubPage
                     header={
                         <CustomHeader>
@@ -71,8 +71,10 @@ function ContainerDetailsPage(props: any) {
                             <ItemDetails item={data} match={props.match} />
                         ) : isLoading ? (
                             <div>Loading</div>
-                        ) : (
+                        ) : isError ? (
                             <div>Not found</div>
+                        ) : (
+                            <></>
                         )}
                     </ContentWrapper>
                 </SubPage>

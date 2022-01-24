@@ -7,7 +7,7 @@ function ContainerAppRouter() {
 
     return (
         <>
-            <Route path={`${match.path}/track/`} component={Track} />
+            <Route path={`${match.path}/track/:id?`} component={Track} />
 
             <Route path={`${match.path}/admin`} component={Admin} />
         </>

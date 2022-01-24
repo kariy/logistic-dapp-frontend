@@ -7,6 +7,8 @@ import ContainerListPage from "./ContainerListPage";
 import NewContainerPage from "./NewContainerPage";
 import ContainerPage from "./ContainerPage";
 
+// import ContainerDetailsPage from "./ContainerPage/ContainerDetailsPage";
+
 function Admin(props: any) {
     const user = useUser();
 

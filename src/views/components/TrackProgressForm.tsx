@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import { useCallback } from "react";
 
-import { useContainerContract } from "../ContainerCompany/providers/ContainerContractProvider";
-import { useEffect, useState } from "react";
-import { Checkpoint } from "../../types/item";
+import { Checkpoint, ItemType } from "../../types/item";
 import { SectionHeader } from "../../components/styled";
+import { useContract } from "../../providers/ContractProvider";
+import QueryRenderProp from "../../components/QueryRenderProp";
 
 const Container = styled.div``;
 
@@ -47,70 +48,74 @@ const Table = styled.table`
     }
 `;
 
-function TrackProgressForm(props: any) {
-    const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
-    const [isError, setIsError] = useState(false);
+interface Props {
+    itemId: string | number;
+    itemType: ItemType;
+}
 
-    const id = props.match.params.id;
-    const container = useContainerContract();
+function TrackProgressForm({ itemId: id, itemType: type }: Props) {
+    const contractType = type === "Container" ? "container" : "parcel";
 
-    // useEffect(() => {
-    //     console.log("checkpoints", checkpoints);
-    // }, [checkpoints]);
+    // @ts-ignore
+    const contract = useContract()[contractType];
 
-    useEffect(() => {
-        container.methods
-            .getCheckpointsOf(id)
-            .call()
-            .then((res: Checkpoint[]) => {
-                setIsError(false);
-                setCheckpoints(res);
-            })
-            .catch(() => setIsError(true));
-    }, [container, id]);
+    const queryFn = useCallback(
+        () => contract.methods.getCheckpointsOf(id).call(),
+        [contract, id]
+    );
 
     return (
         <Container>
             <SectionHeader>Shipment progress</SectionHeader>
 
-            <TableWrapper>
-                {isError ? (
-                    <div>Not found</div>
-                ) : (
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th className="td--1">Timestamp</th>
-                                <th className="td--1">Location</th>
-                                <th className="td--2">Status</th>
-                                <th className="td--2">Remarks</th>
-                                <th className="td--2">Operator</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {checkpoints.map((checkpoint, idx) => (
-                                <tr key={`checkpoint_${idx}`}>
-                                    <td className="td--1">
-                                        {new Date(
-                                            Number(1642521464 * 1000)
-                                        ).toUTCString()}
-                                    </td>
-                                    <td className="td--1">
-                                        {checkpoint.location}
-                                    </td>
-                                    <td className="td--2">
-                                        {checkpoint.status}
-                                    </td>
-                                    <td className="td--2">{checkpoint.desc}</td>
-                                    <td className="td--2 td__operator">
-                                        {checkpoint.operator}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+            <QueryRenderProp<Checkpoint[]>
+                queryFn={queryFn}
+                queryKey={"itemProgress"}
+                render={({ data, isLoading }) => (
+                    <TableWrapper>
+                        {data ? (
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th className="td--1">Timestamp</th>
+                                        <th className="td--1">Location</th>
+                                        <th className="td--2">Status</th>
+                                        <th className="td--2">Remarks</th>
+                                        <th className="td--2">Operator</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {data.map((checkpoint, idx) => (
+                                        <tr key={`checkpoint_${idx}`}>
+                                            <td className="td--1">
+                                                {new Date(
+                                                    checkpoint.timestamp * 1000
+                                                ).toUTCString()}
+                                            </td>
+                                            <td className="td--1">
+                                                {checkpoint.location}
+                                            </td>
+                                            <td className="td--2">
+                                                {checkpoint.status}
+                                            </td>
+                                            <td className="td--2">
+                                                {checkpoint.desc}
+                                            </td>
+                                            <td className="td--2 td__operator">
+                                                {checkpoint.operator}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        ) : isLoading ? (
+                            <div>Loading</div>
+                        ) : (
+                            <div>Not found</div>
+                        )}
+                    </TableWrapper>
                 )}
-            </TableWrapper>
+            />
         </Container>
     );
 }

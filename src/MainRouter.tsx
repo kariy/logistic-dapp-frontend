@@ -1,13 +1,13 @@
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import Fallback from "./components/Fallback";
-import AppViewSelector from "./views";
+import AppViewPage from "./views";
 import ContainerApp from "./views/ContainerCompany";
 
 function MainRouter() {
     return (
         <Switch>
-            <Route path="/" exact component={AppViewSelector} />
+            <Route path="/" exact component={AppViewPage} />
 
             <Route path="/container-app" component={ContainerApp} />
 

@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
+import { FormSubmitHandler } from "../../../../../types/form";
 import AddCheckpointForm, {
     TCheckpointFieldValues,
 } from "../../../../components/Checkpoint/AddCheckpointForm";
@@ -27,8 +29,16 @@ function CompleteContainerShipmentPage({ match }: Props) {
     const container = useContract()?.container;
     const user = useUser();
 
-    const handleSubmit: SubmitHandler<TCheckpointFieldValues> = function (
-        data
+    useEffect(() => {
+        container.methods
+            .getReceiverOf(match.params.id)
+            .call()
+            .then((data: any) => console.log("item receiver", data));
+    }, [container, match]);
+
+    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function (
+        data,
+        reset
     ) {
         container.methods
             .completeContainerShipment(

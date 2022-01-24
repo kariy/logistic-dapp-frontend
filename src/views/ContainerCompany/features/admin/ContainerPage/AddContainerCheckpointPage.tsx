@@ -1,38 +1,41 @@
+import { useEffect } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
+import { FormSubmitHandler } from "../../../../../types/form";
 import AddCheckpointForm, {
     TCheckpointFieldValues,
 } from "../../../../components/Checkpoint/AddCheckpointForm";
 import ItemFunction from "../../../../components/ItemFunction";
 
-function AddContainerCheckpointPage(props: any) {
+interface Props {
+    match: any;
+}
+
+function AddContainerCheckpointPage({ match }: Props) {
     const contract = useContract()?.container;
     const user = useUser();
 
-    const handleSubmit: SubmitHandler<TCheckpointFieldValues> = function (
-        data
+    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function (
+        data,
+        reset
     ) {
         contract.methods
             .addContainerCheckpoint(
-                props.match.params.id,
+                match.params.id,
                 data.status,
                 data.desc,
                 data.operator,
                 data.locName
             )
             .send({ from: user?.address })
-            .then((res: any) => {
-                // handle response here
-                console.log("res", res);
-            })
-            .catch(() => {});
+            .then((res: any) => reset());
     };
 
     return (
         <ItemFunction
-            id={props.match.params.id}
+            id={match.params.id}
             type="Container"
             title="Add a checkpoint"
         >

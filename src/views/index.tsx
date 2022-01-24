@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function AppViewSelector() {
+function AppViewPage() {
     return (
         <div>
             app selector
@@ -9,4 +9,4 @@ function AppViewSelector() {
     );
 }
 
-export default AppViewSelector;
+export default AppViewPage;

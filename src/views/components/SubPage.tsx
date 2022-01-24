@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PageBackHeader from "../../components/PageBackHeader";
+import PageBackHeader from "./PageBackHeader";
 import { SectionHeader } from "../../components/styled";
 
 const Container = styled.div``;

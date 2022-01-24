@@ -1,13 +1,16 @@
 import { SubmitHandler } from "react-hook-form";
-import { Route, useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { SectionBreak } from "../../../../components/styled";
 import MainPage from "../../../components/MainPage";
 import TrackProgressForm from "../../../components/TrackProgressForm";
 import TrackSearchForm from "../../../components/TrackSearchForm";
 
-function Track() {
-    const match = useRouteMatch();
+interface Props {
+    match: any;
+}
+
+function Track({ match }: Props) {
     const history = useHistory();
 
     const onSubmit: SubmitHandler<{
@@ -19,11 +22,17 @@ function Track() {
     return (
         <MainPage title="Track & Trace">
             <TrackSearchForm
+                defaultValue={match.params.id ? match.params.id : null}
                 onSubmit={onSubmit}
                 placeholder="Enter container ID here"
             />
             <SectionBreak />
-            <Route path={`${match.url}/:id`} component={TrackProgressForm} />
+            {match.params.id ? (
+                <TrackProgressForm
+                    itemId={match.params.id}
+                    itemType="Container"
+                />
+            ) : null}
         </MainPage>
     );
 }
