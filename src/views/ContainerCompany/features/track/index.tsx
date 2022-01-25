@@ -1,7 +1,9 @@
+import { useCallback, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 
+import QueryRenderProp from "../../../../components/QueryRenderProp";
 import { SectionBreak } from "../../../../components/styled";
+import { useContract } from "../../../../providers/ContractProvider";
 import MainPage from "../../../components/MainPage";
 import TrackProgressForm from "../../../components/TrackProgressForm";
 import TrackSearchForm from "../../../components/TrackSearchForm";
@@ -11,26 +13,35 @@ interface Props {
 }
 
 function Track({ match }: Props) {
-    const history = useHistory();
+    const [id, setId] = useState<number | undefined>(match.params.id);
+    const container = useContract()?.container;
+
+    const queryFn = useCallback(
+        () => container.methods.getCheckpointsOf(id).call(),
+        [container, id]
+    );
 
     const onSubmit: SubmitHandler<{
         id: number;
     }> = function (data) {
-        history.replace(`${match.url}/${data.id}`);
+        setId(data.id);
     };
 
     return (
         <MainPage title="Track & Trace">
             <TrackSearchForm
-                defaultValue={match.params.id ? match.params.id : null}
+                defaultValue={id || ""}
                 onSubmit={onSubmit}
                 placeholder="Enter container ID here"
             />
             <SectionBreak />
-            {match.params.id ? (
-                <TrackProgressForm
-                    itemId={match.params.id}
-                    itemType="Container"
+            {id ? (
+                <QueryRenderProp
+                    queryFn={queryFn}
+                    queryKey={`track_${id}`}
+                    render={({ data }) => (
+                        <TrackProgressForm checkpoints={data} />
+                    )}
                 />
             ) : null}
         </MainPage>
