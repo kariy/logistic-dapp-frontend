@@ -1,6 +1,6 @@
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import Fallback from "./components/Fallback";
+import FallbackPage from "./components/FallbackPage";
 import AppViewPage from "./views";
 import ContainerApp from "./views/ContainerCompany";
 
@@ -13,7 +13,7 @@ function MainRouter() {
 
             {/* <Route path="/courier-app" component={CourierApp} /> */}
 
-            <Route path="/404" component={Fallback} />
+            <Route path="/404" component={FallbackPage} />
 
             <Redirect to="/404" />
         </Switch>

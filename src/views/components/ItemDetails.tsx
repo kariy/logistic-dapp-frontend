@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MainButton } from "../../components/styled";
 
@@ -28,20 +29,27 @@ const Entry = styled.div`
 
 const ButtonsWrapper = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 
     ${MainButton} {
         border-radius: ${(props) => props.theme.rounded.lg};
+        margin: unset;
         flex: 1;
-        margin: 0 0.5rem;
     }
+`;
+
+const LinkStyled = styled(Link)`
+    display: flex;
+    flex: 1;
+    margin: 0 0.5rem;
 `;
 
 interface Props {
     item: Item;
+    match?: any; // route props
 }
 
-function ItemDetails({ item }: Props) {
+function ItemDetails({ item, match }: Props) {
     return (
         <ContainerStyled>
             <EntryFormWrapper>
@@ -55,8 +63,11 @@ function ItemDetails({ item }: Props) {
                 </Entry>
                 <Entry>
                     <Label>Destination</Label>
-                    <Data>{Country[item.countryDestination]}</Data>
+                    <Data>{`${item.destination.location}, ${
+                        Country[item.countryDestination]
+                    }`}</Data>
                 </Entry>
+
                 <Entry>
                     <Label>Status</Label>
                     <Data>{ItemStatus[item.status]}</Data>
@@ -75,8 +86,8 @@ function ItemDetails({ item }: Props) {
                     <Label>Date completed</Label>
                     <Data>
                         {item.dateCompleted
-                            ? "n/a"
-                            : new Date(item.dateCompleted * 1000).toUTCString()}
+                            ? new Date(item.dateCompleted * 1000).toUTCString()
+                            : "n/a"}
                     </Data>
                 </Entry>
 
@@ -97,10 +108,35 @@ function ItemDetails({ item }: Props) {
                     </>
                 ) : null}
             </EntryFormWrapper>
+
             <ButtonsWrapper>
-                <MainButton>Add a checkpoint</MainButton>
-                <MainButton>Initiate shipment</MainButton>
-                <MainButton>Complete shipment</MainButton>
+                <LinkStyled to={`${match?.url}/add-checkpoint`}>
+                    <MainButton
+                        disabled={
+                            item.status == ItemStatus.Completed ? true : false
+                        }
+                    >
+                        Add a checkpoint
+                    </MainButton>
+                </LinkStyled>
+                <LinkStyled to={`${match?.url}/init-shipment`}>
+                    <MainButton
+                        disabled={
+                            item.status == ItemStatus.Processing ? false : true
+                        }
+                    >
+                        Initiate shipment
+                    </MainButton>
+                </LinkStyled>
+                <LinkStyled to={`${match?.url}/complete-shipment`}>
+                    <MainButton
+                        disabled={
+                            item.status == ItemStatus.Ongoing ? false : true
+                        }
+                    >
+                        Complete shipment
+                    </MainButton>
+                </LinkStyled>
             </ButtonsWrapper>
         </ContainerStyled>
     );

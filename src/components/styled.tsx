@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const PageContainer = styled.div`
-    height: 100%;
+    height: 100vh;
 `;
 
-export const MaxPageContainer = styled(PageContainer)`
+export const MaxPageContainer = styled.div`
     width: min(90%, 600px);
     margin: 0 auto;
 `;
@@ -33,11 +33,10 @@ export const SectionBreak = styled.hr`
 export const SectionHeader = styled.div`
     background-color: #c5c5c5;
     border-radius: ${(props) => props.theme.rounded.md};
-    padding: 0.6em 1.2em;
+    padding: 0.8em 1.2em;
     margin-top: 1rem;
     margin-bottom: 2rem;
     font-weight: 600;
-    text-transform: capitalize;
 `;
 
 export const MainButton = styled.button`
@@ -48,8 +47,10 @@ export const MainButton = styled.button`
     display: block;
     margin: 0 auto;
     padding: 1em 2.5em;
+    border: 1px solid #b9b9b9;
+    background-color: white;
 
-    &:hover {
+    &:hover:enabled {
         background-color: #dbdbdb;
     }
 `;
@@ -66,6 +67,7 @@ export const Label = styled.label`
 `;
 
 export const Input = styled.input`
+    background-color: white;
     width: 100%;
     padding: 0.9em 1em;
     margin-top: 0.7rem;

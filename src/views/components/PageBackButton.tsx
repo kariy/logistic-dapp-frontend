@@ -4,7 +4,7 @@ import styled from "styled-components";
 // @ts-ignore
 import { ReactComponent as PageBackSvg } from "../../assets/svgs/pageBackButton.svg";
 
-export const PageBack = styled(PageBackSvg)`
+const PageBack = styled(PageBackSvg)`
     cursor: pointer;
     height: 17px;
 `;
