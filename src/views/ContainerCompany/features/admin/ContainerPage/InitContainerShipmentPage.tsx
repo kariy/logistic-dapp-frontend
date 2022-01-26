@@ -1,4 +1,3 @@
-import { useQuery } from "react-query";
 import styled from "styled-components";
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
@@ -28,13 +27,6 @@ interface Props {
 function InitContainerShipmentPage({ match }: Props) {
     const container = useContract()?.container;
     const user = useUser();
-
-    // retrieve container's receiver
-    const { data: owner } = useQuery<string>(
-        "containerReceiver",
-        () => container.methods.owner().call(),
-        { refetchOnWindowFocus: false }
-    );
 
     const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({
         data,
