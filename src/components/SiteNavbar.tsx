@@ -92,7 +92,7 @@ interface Props {
     links: TNavLink[];
 }
 
-function Navbar({ siteName, links }: Props) {
+function SiteNavbar({ siteName, links }: Props) {
     const user = useUser();
 
     return (
@@ -133,4 +133,4 @@ function Navbar({ siteName, links }: Props) {
     );
 }
 
-export default Navbar;
+export default SiteNavbar;
