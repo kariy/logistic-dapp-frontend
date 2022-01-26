@@ -1,5 +1,5 @@
 import { useRouteMatch } from "react-router-dom";
-import Navbar, { TNavLink } from "../../../components/Navbar";
+import SiteNavbar, { TNavLink } from "../../../components/SiteNavbar";
 
 function getNavLinks(path: string): TNavLink[] {
     return [
@@ -12,7 +12,7 @@ function ContainerNavbar() {
     const match = useRouteMatch();
     const navLinks = getNavLinks(match.path);
 
-    return <Navbar siteName="Container Co." links={navLinks} />;
+    return <SiteNavbar siteName="Container Co." links={navLinks} />;
 }
 
 export default ContainerNavbar;
