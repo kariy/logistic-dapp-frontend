@@ -12,7 +12,7 @@ interface Props {
     match: any;
 }
 
-function Track({ match }: Props) {
+function ContainerTrackPage({ match }: Props) {
     const [id, setId] = useState<number | undefined>(match.params.id);
     const container = useContract()?.container;
 
@@ -48,4 +48,4 @@ function Track({ match }: Props) {
     );
 }
 
-export default Track;
+export default ContainerTrackPage;

@@ -41,38 +41,38 @@ function CompleteParcelShipmentPage({ match }: Props) {
         setError,
         reset,
     }) {
-        console.log(
-            data.operator,
-            parcel?.destination.receiver,
-            data.operator === parcel?.destination.receiver
-        );
+        // console.log(
+        //     data.operator,
+        //     parcel?.destination.receiver,
+        //     data.operator === parcel?.destination.receiver
+        // );
 
-        if (data.operator !== parcel?.destination.receiver) {
-            setError("operator", {
-                type: "validate",
-                message: "Only the receiver can complete the shipment!",
-            });
+        // if (data.operator !== parcel?.destination.receiver) {
+        //     setError("operator", {
+        //         type: "validate",
+        //         message: "Only the receiver can complete the shipment!",
+        //     });
 
-            return;
-        }
+        //     return;
+        // }
 
         contract.methods
-            .completeParcelShipment(
+            .completeItemShipment(
                 match.params.id,
                 data.status,
                 data.desc,
                 data.locName
             )
-            .send({ from: user?.address })
+            .send({ from: user?.address, value: parcel?.price })
             .then(() => reset())
             .catch(() => console.log("error"));
     };
 
     return (
         <ItemFunction
-            id={match.params.id}
-            type="Parcel"
             title="Complete parcel shipment"
+            type="Parcel"
+            id={match.params.id}
         >
             <FormWrapper>
                 <div>Checkpoint</div>

@@ -1,6 +1,5 @@
 import ItemDetails from "../../../../components/ItemDetails";
 
-import { Link } from "react-router-dom";
 import { useContract } from "../../../../../providers/ContractProvider";
 import SubPage from "../../../../components/SubPage";
 import QueryRenderProp from "../../../../../components/QueryRenderProp";
@@ -9,29 +8,7 @@ import { useCallback } from "react";
 import { Parcel } from "../../../../../types";
 import styled from "styled-components";
 
-// @ts-ignore
-import { ReactComponent as UpArrowSvg } from "../../../../../assets/svgs/up-right-corner-arrow.svg";
-
-const CustomHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    & > :nth-child(2) {
-        text-transform: none;
-        color: inherit;
-        font-weight: 400;
-        font-size: 0.75em;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-`;
-
-const ProgressArrow = styled(UpArrowSvg)`
-    margin-left: 5px;
-`;
+import ItemDetailsHeader from "../../../../components/ItemDetailsHeader";
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -55,15 +32,10 @@ function ParcelDetailsPage(props: any) {
             render={({ data, isLoading, isError }) => (
                 <SubPage
                     header={
-                        <CustomHeader>
-                            <span>Parcel {props.match.params.id}</span>
-                            <Link
-                                to={`/courier-app/track/${props.match.params.id}`}
-                            >
-                                View progress
-                                <ProgressArrow />
-                            </Link>
-                        </CustomHeader>
+                        <ItemDetailsHeader
+                            id={props.match.params.id}
+                            type="Parcel"
+                        />
                     }
                 >
                     <ContentWrapper>

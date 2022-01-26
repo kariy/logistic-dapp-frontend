@@ -7,13 +7,14 @@ export enum ThemeEnum {
 
 type Color = string;
 
-interface ThemeColors {
-    white?: Color;
-    black?: Color;
-    primary?: Color;
-    secondary?: Color;
-    grey?: Color;
-}
+type ThemeColors = Partial<{
+    white: Color;
+    black: Color;
+    primary: Color;
+    secondary: Color;
+    grey: Color;
+    error: Color;
+}>;
 
 function getColors(mode: ThemeEnum): ThemeColors {
     return {
@@ -24,6 +25,7 @@ function getColors(mode: ThemeEnum): ThemeColors {
         // primary: mode ? "#F2E9E4" : "#EF4A86",
         // secondary: mode ? "#4A4E69" : "#FFFFFF",
         grey: "#B1B1B1",
+        error: "#c9184a",
     };
 }
 

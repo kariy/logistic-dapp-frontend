@@ -1,12 +1,38 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { MainButton } from "../../components/styled";
+import { MainButton, SectionBreak } from "../../components/styled";
+import { useWeb3 } from "../../providers/Web3Provider";
 
 import { Country, Item, ItemStatus, Parcel, ShipmentType } from "../../types";
+
+// @ts-ignore
+import { ReactComponent as UpArrowSvg } from "../../assets/svgs/up-right-corner-arrow.svg";
+import { useParceListToggle } from "../ContainerCompany/features/admin/ContainerPage/ParcelListToggleProvider";
+
+const UpArrow = styled(UpArrowSvg)`
+    margin-left: 5px;
+    height: 9px;
+`;
+
+const LinkStyled = styled(Link)`
+    color: inherit;
+`;
 
 const ContainerStyled = styled.div`
     width: 100%;
     margin-bottom: 2rem;
+
+    ${SectionBreak} {
+        margin: 1.4rem 0;
+    }
+
+    #container-parcel-link {
+        cursor: pointer;
+    }
+
+    #container-parcel-link:hover {
+        text-decoration: underline;
+    }
 `;
 
 const EntryFormWrapper = styled.div`
@@ -23,7 +49,7 @@ const Data = styled.div``;
 const Entry = styled.div`
     margin: 0.9rem 0;
     display: grid;
-    grid-template-columns: 8rem 1fr;
+    grid-template-columns: 9rem 1fr;
     column-gap: 25px;
 `;
 
@@ -36,12 +62,12 @@ const ButtonsWrapper = styled.div`
         margin: unset;
         flex: 1;
     }
-`;
 
-const LinkStyled = styled(Link)`
-    display: flex;
-    flex: 1;
-    margin: 0 0.5rem;
+    ${LinkStyled} {
+        display: flex;
+        flex: 1;
+        margin: 0 0.5rem;
+    }
 `;
 
 interface Props {
@@ -50,6 +76,9 @@ interface Props {
 }
 
 function ItemDetails({ item, match }: Props) {
+    const parcelListToggle = useParceListToggle();
+    const web3 = useWeb3();
+
     return (
         <ContainerStyled>
             <EntryFormWrapper>
@@ -85,9 +114,9 @@ function ItemDetails({ item, match }: Props) {
                 <Entry>
                     <Label>Date completed</Label>
                     <Data>
-                        {item.dateCompleted
+                        {item.dateCompleted != 0
                             ? new Date(item.dateCompleted * 1000).toUTCString()
-                            : "n/a"}
+                            : "-"}
                     </Data>
                 </Entry>
 
@@ -103,10 +132,32 @@ function ItemDetails({ item, match }: Props) {
                         </Entry>
                         <Entry>
                             <Label>Parcel price</Label>
-                            <Data>{(item as Parcel).price}</Data>
+                            <Data>
+                                {web3?.utils.fromWei(
+                                    `${(item as Parcel).price}`
+                                )}{" "}
+                                ETH
+                            </Data>
                         </Entry>
                     </>
-                ) : null}
+                ) : (
+                    <>
+                        <SectionBreak />
+                        <Entry>
+                            <Label>Container parcels</Label>
+                            <Data
+                                id="container-parcel-link"
+                                onClick={() => parcelListToggle?.dispatch(true)}
+                            >
+                                {/* <LinkStyled to={`${match?.url}/item`}> */}
+                                View all parcels
+                                <UpArrow />
+                                {/* </LinkStyled> */}
+                            </Data>
+                        </Entry>
+                        <SectionBreak />
+                    </>
+                )}
             </EntryFormWrapper>
 
             <ButtonsWrapper>

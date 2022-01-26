@@ -1,13 +1,17 @@
-import { SubmitHandler, useForm, UseFormReset } from "react-hook-form";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
+import { ErrorMessage } from "@hookform/error-message";
+
 import { Label, MainButton } from "../../../components/styled";
 import { useUser } from "../../../providers/UserProvider";
 import { FormSubmitHandler } from "../../../types/form";
 import AddCheckpointFormFields from "./AddCheckpointFormFields";
+import FormError from "../../../components/FormError";
 
 const Form = styled.form`
-    & > div {
-        margin-bottom: 3.5rem;
+    #form-field-wrapper {
+        /* margin-bottom: 2rem; */
     }
 
     .duo-wrapper {
@@ -19,6 +23,10 @@ const Form = styled.form`
             flex: 1;
         }
     }
+
+    #error-wrapper {
+        margin: 2rem 0;
+    }
 `;
 
 export type TCheckpointFieldValues = {
@@ -28,27 +36,54 @@ export type TCheckpointFieldValues = {
     operator: string;
 };
 
-// export type FormSubmitHandler<T> = (data: T, reset: UseFormReset<T>) => any;
-
 interface Props {
-    // onSubmit: SubmitHandler<TCheckpointFieldValues>;
     onSubmit: FormSubmitHandler<TCheckpointFieldValues>;
     buttonText?: string;
 }
 
 function AddCheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
-    const { register, handleSubmit, reset } = useForm<TCheckpointFieldValues>();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        setError,
+        clearErrors,
+        formState: { errors },
+    } = useForm<TCheckpointFieldValues>();
+
     const user = useUser();
 
+    useEffect(() => {
+        clearErrors();
+    }, [user, clearErrors]);
+
+    useEffect(() => {
+        if (user) setValue("operator", user.address || "");
+    }, [user, setValue]);
+
     const submitCallback: SubmitHandler<TCheckpointFieldValues> = (data) =>
-        onSubmit(data, reset);
+        onSubmit({
+            data,
+            reset,
+            setError,
+            setValue,
+        });
 
     return (
         <Form onSubmit={handleSubmit(submitCallback)}>
-            <div>
+            <div id="form-field-wrapper">
                 <AddCheckpointFormFields
                     register={register}
-                    defaultOperator={user?.address ? user?.address : undefined}
+                    disableOperator={user?.address ? true : false}
+                />
+            </div>
+
+            <div id="error-wrapper">
+                <ErrorMessage
+                    name="operator"
+                    errors={errors}
+                    render={({ message }) => <FormError message={message} />}
                 />
             </div>
 

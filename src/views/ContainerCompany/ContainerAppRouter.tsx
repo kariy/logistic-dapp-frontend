@@ -1,8 +1,8 @@
 import { Redirect, Route, useRouteMatch } from "react-router-dom";
 import { useUser } from "../../providers/UserProvider";
 
-import Admin from "./features/admin";
-import Track from "./features/track";
+import ContainerAdminPage from "./features/admin";
+import ContainerTrackPage from "./features/track";
 
 function ContainerAppRouter() {
     const match = useRouteMatch();
@@ -10,9 +10,15 @@ function ContainerAppRouter() {
 
     return (
         <>
-            <Route path={`${match.path}/track/:id?`} component={Track} />
+            <Route
+                path={`${match.path}/track/:id?`}
+                component={ContainerTrackPage}
+            />
 
-            <Route path={`${match.path}/admin`} component={Admin} />
+            <Route
+                path={`${match.path}/admin`}
+                component={ContainerAdminPage}
+            />
 
             <Route
                 exact

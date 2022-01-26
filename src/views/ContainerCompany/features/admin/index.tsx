@@ -1,15 +1,13 @@
 import { Redirect, Route } from "react-router-dom";
 
 import { useUser } from "../../../../providers/UserProvider";
-import ConnectWallet from "../../../../components/ConnectWallet";
+import ConnectWalletPage from "../../../../components/ConnectWallet";
 
 import ContainerListPage from "./ContainerListPage";
 import NewContainerPage from "./NewContainerPage";
 import ContainerPage from "./ContainerPage";
 
-// import ContainerDetailsPage from "./ContainerPage/ContainerDetailsPage";
-
-function Admin(props: any) {
+function ContainerAdminPage(props: any) {
     const user = useUser();
 
     return (
@@ -41,10 +39,10 @@ function Admin(props: any) {
                     />
                 </>
             ) : (
-                <ConnectWallet />
+                <ConnectWalletPage />
             )}
         </>
     );
 }
 
-export default Admin;
+export default ContainerAdminPage;

@@ -2,11 +2,13 @@ import styled from "styled-components";
 
 export const PageContainer = styled.div`
     height: 100vh;
+    position: relative;
 `;
 
 export const MaxPageContainer = styled.div`
     width: min(90%, 600px);
     margin: 0 auto;
+    padding-bottom: 6rem;
 `;
 
 export const PageHeader = styled.header`

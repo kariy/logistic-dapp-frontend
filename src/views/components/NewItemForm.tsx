@@ -73,9 +73,15 @@ interface Props {
     itemType: ItemType;
     formTitle: string;
     onSubmit: NewItemSubmitHandler;
+    buttonText?: string;
 }
 
-function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
+function NewItemForm({
+    formTitle,
+    itemType,
+    onSubmit,
+    buttonText = "Create",
+}: Props) {
     const { register, handleSubmit, reset, watch, setValue } = useForm();
     const shipmentType = watch("shipmentType", null);
 
@@ -223,12 +229,13 @@ function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
                                 })}
                                 type="number"
                                 placeholder="0"
+                                step={0.0001}
                             />
                         </Label>
                     </>
                 ) : null}
 
-                <MainButton type="submit">Create container</MainButton>
+                <MainButton type="submit">{buttonText}</MainButton>
             </Form>
         </Container>
     );

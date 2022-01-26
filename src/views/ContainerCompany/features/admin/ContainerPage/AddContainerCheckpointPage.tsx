@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { SubmitHandler } from "react-hook-form";
-
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
 import { FormSubmitHandler } from "../../../../../types/form";
@@ -17,10 +14,10 @@ function AddContainerCheckpointPage({ match }: Props) {
     const contract = useContract()?.container;
     const user = useUser();
 
-    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function (
+    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({
         data,
-        reset
-    ) {
+        reset,
+    }) {
         contract.methods
             .addContainerCheckpoint(
                 match.params.id,

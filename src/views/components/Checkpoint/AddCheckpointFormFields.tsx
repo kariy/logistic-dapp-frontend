@@ -5,10 +5,10 @@ import { TCheckpointFieldValues } from "./AddCheckpointForm";
 
 interface Props {
     register: UseFormRegister<TCheckpointFieldValues>;
-    defaultOperator?: string;
+    disableOperator?: boolean;
 }
 
-function AddCheckpointFormFields({ register, defaultOperator = "" }: Props) {
+function AddCheckpointFormFields({ register, disableOperator = false }: Props) {
     return (
         <>
             <Label>
@@ -46,10 +46,8 @@ function AddCheckpointFormFields({ register, defaultOperator = "" }: Props) {
             <Label>
                 Operator
                 <Input
-                    {...register("operator", {
-                        value: defaultOperator,
-                    })}
-                    disabled={defaultOperator ? true : false}
+                    {...register("operator")}
+                    disabled={disableOperator}
                     type="text"
                 />
             </Label>

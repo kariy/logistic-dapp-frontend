@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { SubmitHandler } from "react-hook-form";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
+import { Container } from "../../../../../types";
 import { FormSubmitHandler } from "../../../../../types/form";
 import AddCheckpointForm, {
     TCheckpointFieldValues,
@@ -26,21 +26,37 @@ interface Props {
 }
 
 function CompleteContainerShipmentPage({ match }: Props) {
-    const container = useContract()?.container;
+    const contract = useContract()?.container;
     const user = useUser();
 
-    useEffect(() => {
-        container.methods
-            .getReceiverOf(match.params.id)
-            .call()
-            .then((data: any) => console.log("item receiver", data));
-    }, [container, match]);
+    // retrieve container's receiver
+    const { data: container } = useQuery<Container>(
+        "containerReceiver",
+        () => contract.methods.getContainerOf(match.params.id).call(),
+        { refetchOnWindowFocus: false }
+    );
 
-    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function (
+    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({
         data,
-        reset
-    ) {
-        container.methods
+        setError,
+        reset,
+    }) {
+        console.log(
+            data.operator,
+            container?.destination.receiver,
+            data.operator === container?.destination.receiver
+        );
+
+        if (data.operator !== container?.destination.receiver) {
+            setError("operator", {
+                type: "validate",
+                message: "Only the receiver can complete the shipment!",
+            });
+
+            return;
+        }
+
+        contract.methods
             .completeContainerShipment(
                 match.params.id,
                 data.status,
@@ -48,7 +64,7 @@ function CompleteContainerShipmentPage({ match }: Props) {
                 data.locName
             )
             .send({ from: user?.address })
-            .then(() => console.log("complete shpiment success"))
+            .then(() => reset())
             .catch(() => console.log("error"));
     };
 

@@ -1,7 +1,8 @@
-import { SubmitHandler } from "react-hook-form";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
+
 import { FormSubmitHandler } from "../../../../../types/form";
 import AddCheckpointForm, {
     TCheckpointFieldValues,
@@ -28,11 +29,17 @@ function InitContainerShipmentPage({ match }: Props) {
     const container = useContract()?.container;
     const user = useUser();
 
-    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function (
+    // retrieve container's receiver
+    const { data: owner } = useQuery<string>(
+        "containerReceiver",
+        () => container.methods.owner().call(),
+        { refetchOnWindowFocus: false }
+    );
+
+    const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({
         data,
-        reset
-    ) {
-        console.log("init shipment", data);
+        reset,
+    }) {
         container.methods
             .initContainerShipment(
                 match.params.id,

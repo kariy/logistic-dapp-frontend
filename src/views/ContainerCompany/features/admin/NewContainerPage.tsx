@@ -39,6 +39,7 @@ function NewContainerPage() {
                 onSubmit={onSubmit}
                 itemType="Container"
                 formTitle="New Container"
+                buttonText="Create container"
             />
         </div>
     );
