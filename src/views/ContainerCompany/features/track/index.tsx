@@ -1,40 +1,51 @@
+import { useCallback, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
-import { Route, useHistory, useRouteMatch } from "react-router-dom";
-import styled from "styled-components";
-import {
-    PageHeader,
-    PageTitle,
-    SectionBreak,
-} from "../../../../components/styled";
 
+import QueryRenderProp from "../../../../components/QueryRenderProp";
+import { SectionBreak } from "../../../../components/styled";
+import { useContract } from "../../../../providers/ContractProvider";
+import MainPage from "../../../components/MainPage";
 import TrackProgressForm from "../../../components/TrackProgressForm";
 import TrackSearchForm from "../../../components/TrackSearchForm";
 
-const Container = styled.div``;
+interface Props {
+    match: any;
+}
 
-function Track() {
-    const match = useRouteMatch();
-    const history = useHistory();
+function ContainerTrackPage({ match }: Props) {
+    const [id, setId] = useState<number | undefined>(match.params.id);
+    const container = useContract()?.container;
+
+    const queryFn = useCallback(
+        () => container.methods.getCheckpointsOf(id).call(),
+        [container, id]
+    );
 
     const onSubmit: SubmitHandler<{
         id: number;
     }> = function (data) {
-        history.replace(`${match.url}/${data.id}`);
+        setId(data.id);
     };
 
     return (
-        <Container>
-            <PageHeader>
-                <PageTitle>Track & Trace</PageTitle>
-            </PageHeader>
+        <MainPage title="Track & Trace">
             <TrackSearchForm
+                defaultValue={id || ""}
                 onSubmit={onSubmit}
                 placeholder="Enter container ID here"
             />
             <SectionBreak />
-            <Route path={`${match.url}/:id`} component={TrackProgressForm} />
-        </Container>
+            {id ? (
+                <QueryRenderProp
+                    queryFn={queryFn}
+                    queryKey={`track_${id}`}
+                    render={({ data }) => (
+                        <TrackProgressForm checkpoints={data} />
+                    )}
+                />
+            ) : null}
+        </MainPage>
     );
 }
 
-export default Track;
+export default ContainerTrackPage;

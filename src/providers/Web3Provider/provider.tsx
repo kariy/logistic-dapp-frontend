@@ -10,5 +10,7 @@ declare global {
 export const Web3Provider: React.FC = function ({ children }) {
     const web3 = new Web3(Web3.givenProvider);
 
+    web3.eth.handleRevert = true;
+
     return <Web3Context.Provider value={web3}>{children}</Web3Context.Provider>;
 };

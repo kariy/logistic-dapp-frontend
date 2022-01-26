@@ -39,23 +39,66 @@
         "type": "event"
     },
     {
-        "anonymous": false,
         "inputs": [
             {
-                "indexed": true,
+                "internalType": "enum ContainerFactory.ShipmentType",
+                "name": "shipmentType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint8",
+                "name": "country",
+                "type": "uint8"
+            },
+            {
                 "internalType": "address",
-                "name": "previousOwner",
+                "name": "receiver",
                 "type": "address"
             },
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
+                "internalType": "string",
+                "name": "locName",
+                "type": "string"
             }
         ],
-        "name": "OwnershipTransferred",
-        "type": "event"
+        "name": "createContainer",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_containerId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum ContainerFactory.ContainerStatus",
+                "name": "_status",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "countryDest",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "courierAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "courierItemId",
+                "type": "uint256"
+            }
+        ],
+        "name": "queueItem",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {
         "inputs": [
@@ -119,7 +162,7 @@
                 "type": "string"
             }
         ],
-        "name": "completeContainerShipment",
+        "name": "initContainerShipment",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -138,27 +181,27 @@
     {
         "inputs": [
             {
-                "internalType": "enum ContainerFactory.ShipmentType",
-                "name": "shipmentType",
-                "type": "uint8"
-            },
-            {
-                "internalType": "uint8",
-                "name": "country",
-                "type": "uint8"
-            },
-            {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "containerId",
+                "type": "uint256"
             },
             {
                 "internalType": "string",
-                "name": "locName",
+                "name": "checkpointStatus",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "checkpointDesc",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "checkpointLocName",
                 "type": "string"
             }
         ],
-        "name": "createContainer",
+        "name": "completeContainerShipment",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -182,50 +225,35 @@
                 "type": "uint256"
             }
         ],
-        "name": "getCheckpointsOf",
+        "name": "setContainerAsMissing",
         "outputs": [
             {
-                "components": [
-                    {
-                        "internalType": "string",
-                        "name": "status",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "desc",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "operator",
-                        "type": "address"
-                    },
-                    {
-                        "components": [
-                            {
-                                "internalType": "string",
-                                "name": "name",
-                                "type": "string"
-                            }
-                        ],
-                        "internalType": "struct ContainerFactory.Location",
-                        "name": "location",
-                        "type": "tuple"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "timeStamp",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct ContainerFactory.Checkpoint[]",
+                "internalType": "uint256",
+                "name": "_containerId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum ContainerFactory.ContainerStatus",
+                "name": "_status",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTotalContainers",
+        "outputs": [
+            {
+                "internalType": "uint256",
                 "name": "",
-                "type": "tuple[]"
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -293,7 +321,28 @@
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "containerId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getStatusOf",
+        "outputs": [
+            {
+                "internalType": "enum ContainerFactory.ContainerStatus",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -329,7 +378,8 @@
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -339,147 +389,50 @@
                 "type": "uint256"
             }
         ],
-        "name": "getStatusOf",
+        "name": "getCheckpointsOf",
         "outputs": [
             {
-                "internalType": "enum ContainerFactory.ContainerStatus",
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "status",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "desc",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "operator",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            }
+                        ],
+                        "internalType": "struct ContainerFactory.Location",
+                        "name": "location",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "timestamp",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ContainerFactory.Checkpoint[]",
                 "name": "",
-                "type": "uint8"
+                "type": "tuple[]"
             }
         ],
         "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getTotalContainers",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "containerId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "checkpointStatus",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "checkpointDesc",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "checkpointLocName",
-                "type": "string"
-            }
-        ],
-        "name": "initContainerShipment",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "_containerId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "enum ContainerFactory.ContainerStatus",
-                "name": "_status",
-                "type": "uint8"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "countryDest",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "courierAddr",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "courierItemId",
-                "type": "uint256"
-            }
-        ],
-        "name": "queueItem",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "containerId",
-                "type": "uint256"
-            }
-        ],
-        "name": "setContainerAsMissing",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "_containerId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "enum ContainerFactory.ContainerStatus",
-                "name": "_status",
-                "type": "uint8"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "type": "function",
+        "constant": true
     }
 ]

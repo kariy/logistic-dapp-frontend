@@ -26,7 +26,7 @@ export type Checkpoint = {
     desc: string;
     operator: string;
     location: Location;
-    timestamp: number;
+    timeStamp: number;
 };
 
 export type Item = {

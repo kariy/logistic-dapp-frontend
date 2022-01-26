@@ -1,14 +1,21 @@
+import { Fragment } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 import MainRouter from "./MainRouter";
 import MainProvider from "./providers";
+import { checkWeb3 } from "./providers/Web3Provider/web3-helper";
 
 function App() {
     return (
         <BrowserRouter>
-            <MainProvider>
-                <MainRouter />
-            </MainProvider>
+            {checkWeb3() ? (
+                <MainProvider>
+                    <MainRouter />
+                </MainProvider>
+            ) : (
+                // https://stackoverflow.com/questions/51971449/react-warning-computedmatch-regarding-some-case-issues
+                <Fragment>your browser does not support web3 lmao</Fragment>
+            )}
         </BrowserRouter>
     );
 }

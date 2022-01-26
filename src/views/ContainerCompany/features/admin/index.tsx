@@ -1,21 +1,23 @@
 import { Redirect, Route } from "react-router-dom";
-import styled from "styled-components";
 
-import ConnectWallet from "../../../../components/ConnectWallet";
 import { useUser } from "../../../../providers/UserProvider";
-import ContainerListPage from "./features/ContainerList";
-import NewContainerPage from "./features/NewContainer";
+import ConnectWalletPage from "../../../../components/ConnectWallet";
 
-const Container = styled.div``;
+import ContainerListPage from "./ContainerListPage";
+import NewContainerPage from "./NewContainerPage";
+import ContainerPage from "./ContainerPage";
 
-function Admin(props: any) {
+function ContainerAdminPage(props: any) {
     const user = useUser();
 
     return (
-        <Container>
+        <>
             {user?.address ? (
                 <>
-                    <Route path={`${props.match.path}/containers/:id`} />
+                    <Route
+                        path={`${props.match.path}/containers/:id(\\d+)`}
+                        component={ContainerPage}
+                    />
 
                     <Route
                         path={`${props.match.path}/containers/new`}
@@ -37,10 +39,10 @@ function Admin(props: any) {
                     />
                 </>
             ) : (
-                <ConnectWallet />
+                <ConnectWalletPage />
             )}
-        </Container>
+        </>
     );
 }
 
-export default Admin;
+export default ContainerAdminPage;

@@ -1,4 +1,5 @@
-import { useForm } from "react-hook-form";
+import { useEffect, useRef } from "react";
+import { FieldValues, useForm, UseFormReset } from "react-hook-form";
 import styled from "styled-components";
 import {
     Input,
@@ -40,6 +41,10 @@ const Form = styled.form`
         flex: 1;
     }
 
+    .radio-card--selected {
+        background-color: red;
+    }
+
     ${MainButton} {
         margin-top: 3.5rem;
     }
@@ -59,24 +64,42 @@ export interface TNewParcelFieldValues extends TNewItemFieldValues {
     parcelPayee: string;
 }
 
+export type NewItemSubmitHandler = (
+    data: any,
+    reset: UseFormReset<FieldValues>
+) => void;
+
 interface Props {
     itemType: ItemType;
     formTitle: string;
-    onSubmit: any;
+    onSubmit: NewItemSubmitHandler;
+    buttonText?: string;
 }
 
-function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
-    const { register, handleSubmit } = useForm();
+function NewItemForm({
+    formTitle,
+    itemType,
+    onSubmit,
+    buttonText = "Create",
+}: Props) {
+    const { register, handleSubmit, reset, watch, setValue } = useForm();
+    const shipmentType = watch("shipmentType", null);
+
+    const submitCallback = (data: any) => onSubmit(data, reset);
+
+    useEffect(() => {
+        if (shipmentType == 0) setValue("countryDestination", 5);
+    }, [shipmentType, setValue]);
 
     return (
         <Container>
             <SectionHeader>{formTitle}</SectionHeader>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(submitCallback)}>
                 <fieldset>
                     <Label as="legend">Shipment type</Label>
 
                     <div>
-                        <Label className="radio-card">
+                        <Label className="radio-card ">
                             Domestic
                             <input
                                 {...register("shipmentType", {
@@ -85,6 +108,7 @@ function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
                                             "Please select a shipment type!",
                                         value: true,
                                     },
+                                    valueAsNumber: true,
                                 })}
                                 type="radio"
                                 value="0"
@@ -100,6 +124,7 @@ function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
                                             "Please select a shipment type!",
                                         value: true,
                                     },
+                                    valueAsNumber: true,
                                 })}
                                 type="radio"
                                 value="1"
@@ -118,16 +143,29 @@ function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
                                     "Please select the destination country!",
                                 value: true,
                             },
+                            valueAsNumber: true,
                         })}
-                        defaultValue={""}
+                        disabled={
+                            shipmentType == null || shipmentType == 0
+                                ? true
+                                : false
+                        }
                     >
-                        <option value="">Select a country</option>
-                        {}
-                        <option value="1">Malaysia</option>
-                        <option value="2">Singapore</option>
-                        <option value="3">Thailand</option>
-                        <option value="4">Indonesia</option>
-                        <option value="5">China</option>
+                        {shipmentType == 0 ? (
+                            <option value="5" defaultChecked>
+                                China
+                            </option>
+                        ) : shipmentType == 1 ? (
+                            <>
+                                <option value="">Select a country</option>
+                                <option value="1">Malaysia</option>
+                                <option value="2">Singapore</option>
+                                <option value="3">Thailand</option>
+                                <option value="4">Indonesia</option>
+                            </>
+                        ) : (
+                            <option>Select a shipment type</option>
+                        )}
                     </Input>
                 </Label>
                 <Label>
@@ -191,12 +229,13 @@ function NewItemForm({ formTitle, itemType, onSubmit }: Props) {
                                 })}
                                 type="number"
                                 placeholder="0"
+                                step={0.0001}
                             />
                         </Label>
                     </>
                 ) : null}
 
-                <MainButton type="submit">Create container</MainButton>
+                <MainButton type="submit">{buttonText}</MainButton>
             </Form>
         </Container>
     );

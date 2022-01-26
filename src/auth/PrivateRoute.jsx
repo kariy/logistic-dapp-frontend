@@ -1,5 +1,5 @@
 import { Redirect, Route } from "react-router-dom";
-import ConnectWallet from "../components/ConnectWallet";
+import ConnectWalletPage from "../components/ConnectWallet";
 import { useUser } from "../providers/UserProvider";
 
 function PrivateRoute({ Component, ...rest }) {
@@ -7,7 +7,7 @@ function PrivateRoute({ Component, ...rest }) {
 
     return (
         <Route {...rest}>
-            {user.address ? <Component /> : <ConnectWallet />}
+            {user.address ? <Component /> : <ConnectWalletPage />}
         </Route>
     );
 }

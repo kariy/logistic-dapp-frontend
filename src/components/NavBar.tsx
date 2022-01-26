@@ -1,7 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useUser } from "../providers/UserProvider";
 import ConnectWalletButton from "./ConnectWallet/ConnectWalletButton";
+
+// @ts-ignore
+import { ReactComponent as PrevPageSvg } from "../assets/svgs/prevPage.svg";
 
 const Container = styled.nav`
     box-shadow: 0px 2px 6px rgba(151, 151, 151, 0.25);
@@ -15,6 +18,7 @@ const Wrapper = styled.div`
     width: min(90%, 1300px);
     margin: 0 auto;
     font-size: 0.9rem;
+    user-select: none;
 
     #site-name {
         font-size: 1.2rem;
@@ -58,6 +62,10 @@ const Wrapper = styled.div`
         border: none;
         width: 100%;
     }
+
+    #prevPageLink {
+        margin-right: 2rem;
+    }
 `;
 
 const UserAddress = styled.div`
@@ -68,6 +76,10 @@ const UserAddress = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+`;
+
+const PrevPage = styled(PrevPageSvg)`
+    height: 20px;
 `;
 
 export type TNavLink = {
@@ -87,6 +99,10 @@ function Navbar({ siteName, links }: Props) {
         <Container>
             <Wrapper>
                 <div id="wrapper--left">
+                    <Link to="/" id="prevPageLink">
+                        <PrevPage />
+                    </Link>
+
                     <div id="site-name">{siteName}</div>
                 </div>
 

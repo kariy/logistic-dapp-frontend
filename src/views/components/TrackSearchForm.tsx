@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -30,10 +31,15 @@ export type TTrackFieldValues = {
 interface Props {
     onSubmit: SubmitHandler<TTrackFieldValues>;
     placeholder: string;
+    defaultValue?: string | number;
 }
 
-function TrackSearchForm({ onSubmit, placeholder }: Props) {
-    const { register, handleSubmit } = useForm<TTrackFieldValues>();
+function TrackSearchForm({ onSubmit, placeholder, defaultValue }: Props) {
+    const { register, handleSubmit, setValue } = useForm<TTrackFieldValues>();
+
+    useEffect(() => {
+        if (defaultValue) setValue("id", Number(defaultValue));
+    }, [defaultValue, setValue]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
