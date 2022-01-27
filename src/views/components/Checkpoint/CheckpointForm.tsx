@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
-import { ErrorMessage } from "@hookform/error-message";
 
 import { Label, MainButton } from "../../../components/styled";
 import { useUser } from "../../../providers/UserProvider";
 import { FormSubmitHandler } from "../../../types/form";
 import CheckpointFormFields from "./CheckpointFormFields";
-import FormError from "../../../components/FormError";
 
 const Form = styled.form`
     #form-field-wrapper {
@@ -42,15 +40,8 @@ interface Props {
 }
 
 function CheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        setError,
-        clearErrors,
-        formState: { errors },
-    } = useForm<TCheckpointFieldValues>();
+    const { register, handleSubmit, reset, setValue, setError, clearErrors } =
+        useForm<TCheckpointFieldValues>();
 
     const user = useUser();
 
