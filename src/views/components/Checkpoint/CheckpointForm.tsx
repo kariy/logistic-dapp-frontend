@@ -79,14 +79,6 @@ function CheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
                 />
             </div>
 
-            <div id="error-wrapper">
-                <ErrorMessage
-                    name="operator"
-                    errors={errors}
-                    render={({ message }) => <FormError message={message} />}
-                />
-            </div>
-
             <MainButton type="submit">{buttonText}</MainButton>
         </Form>
     );

@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
+import { Input, Label } from "../../../../../components/styled";
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
+import { useWeb3 } from "../../../../../providers/Web3Provider";
+
 import { Parcel } from "../../../../../types";
 import { FormSubmitHandler } from "../../../../../types/form";
 import CheckpointForm, {
@@ -9,16 +13,34 @@ import CheckpointForm, {
 } from "../../../../components/Checkpoint/CheckpointForm";
 import ItemFunction from "../../../../components/ItemFunction";
 
-const FormWrapper = styled.div`
-    padding: 1rem 2rem 2rem 2rem;
-    background-color: #e9e9e9;
+const PageSection = styled.div`
+    padding: 1em 2em;
     border-radius: ${(props) => props.theme.rounded.lg};
 
-    & > div {
+    .section__title {
         font-weight: 700;
         margin-bottom: 1.4rem;
         text-align: center;
     }
+`;
+
+const Container = styled.div`
+    .form-helper-text {
+        margin-bottom: 3px;
+        font-style: italic;
+        font-size: 0.8em;
+    }
+`;
+
+const PaymentWrapper = styled(PageSection)`
+    border: 1px solid ${(props) => props.theme.colors.grey};
+`;
+
+const CheckpointFormWrapper = styled(PageSection)`
+    padding-bottom: 1.5em;
+    margin-top: 2rem;
+    margin-bottom: 20px;
+    background-color: #e9e9e9;
 `;
 
 interface Props {
@@ -26,8 +48,12 @@ interface Props {
 }
 
 function CompleteParcelShipmentPage({ match }: Props) {
-    const contract = useContract()?.courier;
+    const [balance, setBalance] = useState(0);
+
+    const web3 = useWeb3();
     const user = useUser();
+
+    const contract = useContract()?.courier;
 
     // retrieve container's receiver
     const { data: parcel } = useQuery<Parcel>(
@@ -38,24 +64,8 @@ function CompleteParcelShipmentPage({ match }: Props) {
 
     const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({
         data,
-        setError,
         reset,
     }) {
-        // console.log(
-        //     data.operator,
-        //     parcel?.destination.receiver,
-        //     data.operator === parcel?.destination.receiver
-        // );
-
-        // if (data.operator !== parcel?.destination.receiver) {
-        //     setError("operator", {
-        //         type: "validate",
-        //         message: "Only the receiver can complete the shipment!",
-        //     });
-
-        //     return;
-        // }
-
         contract.methods
             .completeItemShipment(
                 match.params.id,
@@ -65,8 +75,16 @@ function CompleteParcelShipmentPage({ match }: Props) {
             )
             .send({ from: user?.address, value: parcel?.price })
             .then(() => reset())
-            .catch(() => console.log("error"));
+            .catch(() => console.log("transaction failed lmao"));
     };
+
+    useEffect(() => {
+        if (!user || !user.address || !web3) return;
+
+        web3.eth
+            .getBalance(user.address)
+            .then((data) => setBalance(Number(web3.utils.fromWei(data))));
+    }, [user, web3]);
 
     return (
         <ItemFunction
@@ -74,13 +92,44 @@ function CompleteParcelShipmentPage({ match }: Props) {
             type="Parcel"
             id={match.params.id}
         >
-            <FormWrapper>
-                <div>Checkpoint</div>
-                <CheckpointForm
-                    onSubmit={handleSubmit}
-                    buttonText="Complete shipment"
-                />
-            </FormWrapper>
+            <Container>
+                <PaymentWrapper>
+                    <div className="section__title">Payment details</div>
+                    <div>
+                        <Label>
+                            Your account balance
+                            <Input readOnly value={`${balance} ETH`} />
+                        </Label>
+                        <Label>
+                            Parcel price
+                            <Input
+                                readOnly
+                                value={`${
+                                    web3 && parcel
+                                        ? web3.utils.fromWei(
+                                              String(parcel.price)
+                                          )
+                                        : "0"
+                                } ETH`}
+                            />
+                        </Label>
+                    </div>
+                </PaymentWrapper>
+                <CheckpointFormWrapper>
+                    <div className="section__title">Checkpoint</div>
+                    <CheckpointForm
+                        onSubmit={handleSubmit}
+                        buttonText="Complete shipment"
+                    />
+                </CheckpointFormWrapper>
+                <div className="form-helper-text">
+                    *Only the receiver of this parcel can complete the shipment.
+                </div>
+                <div className="form-helper-text">
+                    *Make sure you have enough ether before performing the
+                    transaction.
+                </div>
+            </Container>
         </ItemFunction>
     );
 }

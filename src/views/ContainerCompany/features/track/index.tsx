@@ -4,6 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import QueryRenderProp from "../../../../components/QueryRenderProp";
 import { SectionBreak } from "../../../../components/styled";
 import { useContract } from "../../../../providers/ContractProvider";
+import { Checkpoint } from "../../../../types";
 import MainPage from "../../../components/MainPage";
 import TrackProgressForm from "../../../components/TrackProgressForm";
 import TrackSearchForm from "../../../components/TrackSearchForm";
@@ -36,12 +37,16 @@ function ContainerTrackPage({ match }: Props) {
             />
             <SectionBreak />
             {id ? (
-                <QueryRenderProp
+                <QueryRenderProp<Checkpoint[]>
                     queryFn={queryFn}
                     queryKey={`track_${id}`}
-                    render={({ data }) => (
-                        <TrackProgressForm checkpoints={data} />
-                    )}
+                    render={({ data, isLoading }) =>
+                        data ? (
+                            <TrackProgressForm checkpoints={data} />
+                        ) : (
+                            <div>Error</div>
+                        )
+                    }
                 />
             ) : null}
         </MainPage>

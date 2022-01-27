@@ -25,6 +25,7 @@ const CustomHeader = styled.div`
 const ProgressArrow = styled(UpArrowSvg)`
     height: 7px;
     margin-left: 4px;
+    color: ${(props) => props.theme.colors.white};
 `;
 
 interface Props {

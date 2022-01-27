@@ -50,7 +50,7 @@ interface Props {
     checkpoints: Checkpoint[];
 }
 
-function TrackProgressForm({ checkpoints = [] }: Props) {
+function TrackProgressForm({ checkpoints }: Props) {
     return (
         <Container>
             <SectionHeader>Shipment progress</SectionHeader>
@@ -66,7 +66,7 @@ function TrackProgressForm({ checkpoints = [] }: Props) {
                         <Fragment key={`checkpoint_${idx}`}>
                             <div>
                                 {new Date(
-                                    checkpoint.timeStamp * 1000
+                                    checkpoint.timestamp * 1000
                                 ).toUTCString()}
                             </div>
                             <div>{checkpoint.location}</div>
