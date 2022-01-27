@@ -1,14 +1,14 @@
 import { UseFormRegister } from "react-hook-form";
 import { Input, Label } from "../../../components/styled";
 
-import { TCheckpointFieldValues } from "./AddCheckpointForm";
+import { TCheckpointFieldValues } from "./CheckpointForm";
 
 interface Props {
     register: UseFormRegister<TCheckpointFieldValues>;
     disableOperator?: boolean;
 }
 
-function AddCheckpointFormFields({ register, disableOperator = false }: Props) {
+function CheckpointFormFields({ register, disableOperator = false }: Props) {
     return (
         <>
             <Label>
@@ -55,4 +55,4 @@ function AddCheckpointFormFields({ register, disableOperator = false }: Props) {
     );
 }
 
-export default AddCheckpointFormFields;
+export default CheckpointFormFields;

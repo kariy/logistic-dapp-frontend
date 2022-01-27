@@ -6,7 +6,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Label, MainButton } from "../../../components/styled";
 import { useUser } from "../../../providers/UserProvider";
 import { FormSubmitHandler } from "../../../types/form";
-import AddCheckpointFormFields from "./AddCheckpointFormFields";
+import CheckpointFormFields from "./CheckpointFormFields";
 import FormError from "../../../components/FormError";
 
 const Form = styled.form`
@@ -41,7 +41,7 @@ interface Props {
     buttonText?: string;
 }
 
-function AddCheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
+function CheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
     const {
         register,
         handleSubmit,
@@ -73,7 +73,7 @@ function AddCheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
     return (
         <Form onSubmit={handleSubmit(submitCallback)}>
             <div id="form-field-wrapper">
-                <AddCheckpointFormFields
+                <CheckpointFormFields
                     register={register}
                     disableOperator={user?.address ? true : false}
                 />
@@ -92,4 +92,4 @@ function AddCheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
     );
 }
 
-export default AddCheckpointForm;
+export default CheckpointForm;

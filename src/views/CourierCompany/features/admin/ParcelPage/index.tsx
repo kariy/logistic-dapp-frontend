@@ -2,6 +2,7 @@ import { Route } from "react-router-dom";
 
 import AddParcelCheckpointPage from "./AddParcelCheckpointPage";
 import CompleteParcelShipmentPage from "./CompleteParcelShipmentPage";
+import ForwardParcelPage from "./ForwardParcelPage";
 import InitParcelShipmentPage from "./InitParcelShipmentPage";
 import ParcelDetailsPage from "./ParcelDetailsPage";
 
@@ -12,6 +13,11 @@ function ParcelPage(props: any) {
                 exact
                 path={`${props.match.path}/add-checkpoint`}
                 component={AddParcelCheckpointPage}
+            />
+            <Route
+                exact
+                path={`${props.match.path}/forward-to-container`}
+                component={ForwardParcelPage}
             />
             <Route
                 exact

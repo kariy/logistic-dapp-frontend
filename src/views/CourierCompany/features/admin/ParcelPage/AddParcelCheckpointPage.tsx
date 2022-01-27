@@ -1,9 +1,9 @@
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
 import { FormSubmitHandler } from "../../../../../types/form";
-import AddCheckpointForm, {
+import CheckpointForm, {
     TCheckpointFieldValues,
-} from "../../../../components/Checkpoint/AddCheckpointForm";
+} from "../../../../components/Checkpoint/CheckpointForm";
 import ItemFunction from "../../../../components/ItemFunction";
 
 interface Props {
@@ -36,7 +36,7 @@ function AddParcelCheckpointPage({ match }: Props) {
             type="Parcel"
             title="Add parcel checkpoint"
         >
-            <AddCheckpointForm onSubmit={handleSubmit} />
+            <CheckpointForm onSubmit={handleSubmit} />
         </ItemFunction>
     );
 }
