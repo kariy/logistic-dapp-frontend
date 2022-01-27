@@ -55,4 +55,4 @@ This is a decentralized web application built for [Logistic Dapp Contracts](http
 
 ## 🖱 Live demo
 
-The production version is deployed on Vercel. Try it [here](https://logistic-dapp-frontend-17rirfizp-ammrarf.vercel.app/courier-app/admin/parcels).
+The production version is deployed on Vercel. Try it [here](https://logistic-dapp-frontend-17rirfizp-ammrarf.vercel.app/).
