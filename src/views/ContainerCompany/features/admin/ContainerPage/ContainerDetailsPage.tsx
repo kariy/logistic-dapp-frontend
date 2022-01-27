@@ -1,6 +1,5 @@
 import ItemDetails from "../../../../components/ItemDetails";
 
-import { Link, Route } from "react-router-dom";
 import { useContract } from "../../../../../providers/ContractProvider";
 import SubPage from "../../../../components/SubPage";
 import QueryRenderProp from "../../../../../components/QueryRenderProp";

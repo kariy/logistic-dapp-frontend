@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { FieldValues, useForm, UseFormReset } from "react-hook-form";
 import styled from "styled-components";
 import {
@@ -83,12 +83,13 @@ function NewItemForm({
     buttonText = "Create",
 }: Props) {
     const { register, handleSubmit, reset, watch, setValue } = useForm();
-    const shipmentType = watch("shipmentType", null);
+    const shipmentType = watch("shipmentType");
 
     const submitCallback = (data: any) => onSubmit(data, reset);
 
     useEffect(() => {
-        if (shipmentType == 0) setValue("countryDestination", 5);
+        if (Number(shipmentType) === ShipmentType.Domestic)
+            setValue("countryDestination", 5);
     }, [shipmentType, setValue]);
 
     return (
@@ -146,16 +147,18 @@ function NewItemForm({
                             valueAsNumber: true,
                         })}
                         disabled={
-                            shipmentType == null || shipmentType == 0
+                            shipmentType === undefined ||
+                            Number(shipmentType) === ShipmentType.Domestic
                                 ? true
                                 : false
                         }
                     >
-                        {shipmentType == 0 ? (
+                        {Number(shipmentType) === ShipmentType.Domestic ? (
                             <option value="5" defaultChecked>
                                 China
                             </option>
-                        ) : shipmentType == 1 ? (
+                        ) : Number(shipmentType) ===
+                          ShipmentType.International ? (
                             <>
                                 <option value="">Select a country</option>
                                 <option value="1">Malaysia</option>

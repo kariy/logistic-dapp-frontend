@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MainButton, SectionBreak } from "../../components/styled";
@@ -114,7 +116,7 @@ function ItemDetails({ item, match }: Props) {
                 <Entry>
                     <Label>Date completed</Label>
                     <Data>
-                        {item.dateCompleted != 0
+                        {Number(item.dateCompleted) !== 0
                             ? new Date(item.dateCompleted * 1000).toUTCString()
                             : "-"}
                     </Data>
@@ -164,7 +166,9 @@ function ItemDetails({ item, match }: Props) {
                 <LinkStyled to={`${match?.url}/add-checkpoint`}>
                     <MainButton
                         disabled={
-                            item.status == ItemStatus.Completed ? true : false
+                            Number(item.status) === ItemStatus.Completed
+                                ? true
+                                : false
                         }
                     >
                         Add a checkpoint
@@ -173,7 +177,9 @@ function ItemDetails({ item, match }: Props) {
                 <LinkStyled to={`${match?.url}/init-shipment`}>
                     <MainButton
                         disabled={
-                            item.status == ItemStatus.Processing ? false : true
+                            Number(item.status) === ItemStatus.Processing
+                                ? false
+                                : true
                         }
                     >
                         Initiate shipment
@@ -182,7 +188,9 @@ function ItemDetails({ item, match }: Props) {
                 <LinkStyled to={`${match?.url}/complete-shipment`}>
                     <MainButton
                         disabled={
-                            item.status == ItemStatus.Ongoing ? false : true
+                            Number(item.status) === ItemStatus.Ongoing
+                                ? false
+                                : true
                         }
                     >
                         Complete shipment
