@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
-import { ErrorMessage } from "@hookform/error-message";
 
 import { Label, MainButton } from "../../../components/styled";
 import { useUser } from "../../../providers/UserProvider";
 import { FormSubmitHandler } from "../../../types/form";
-import AddCheckpointFormFields from "./AddCheckpointFormFields";
-import FormError from "../../../components/FormError";
+import CheckpointFormFields from "./CheckpointFormFields";
 
 const Form = styled.form`
     #form-field-wrapper {
@@ -41,16 +39,9 @@ interface Props {
     buttonText?: string;
 }
 
-function AddCheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        setError,
-        clearErrors,
-        formState: { errors },
-    } = useForm<TCheckpointFieldValues>();
+function CheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
+    const { register, handleSubmit, reset, setValue, setError, clearErrors } =
+        useForm<TCheckpointFieldValues>();
 
     const user = useUser();
 
@@ -73,17 +64,9 @@ function AddCheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
     return (
         <Form onSubmit={handleSubmit(submitCallback)}>
             <div id="form-field-wrapper">
-                <AddCheckpointFormFields
+                <CheckpointFormFields
                     register={register}
                     disableOperator={user?.address ? true : false}
-                />
-            </div>
-
-            <div id="error-wrapper">
-                <ErrorMessage
-                    name="operator"
-                    errors={errors}
-                    render={({ message }) => <FormError message={message} />}
                 />
             </div>
 
@@ -92,4 +75,4 @@ function AddCheckpointForm({ onSubmit, buttonText = "Add checkpoint" }: Props) {
     );
 }
 
-export default AddCheckpointForm;
+export default CheckpointForm;

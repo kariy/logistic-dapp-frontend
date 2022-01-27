@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MainButton, SectionBreak } from "../../components/styled";
@@ -56,8 +54,13 @@ const Entry = styled.div`
 `;
 
 const ButtonsWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    @media only screen and (min-width: 650px) {
+        grid-auto-columns: repeat(auto-fill, 1fr);
+    }
 
     ${MainButton} {
         border-radius: ${(props) => props.theme.rounded.lg};
@@ -68,7 +71,6 @@ const ButtonsWrapper = styled.div`
     ${LinkStyled} {
         display: flex;
         flex: 1;
-        margin: 0 0.5rem;
     }
 `;
 
@@ -174,6 +176,21 @@ function ItemDetails({ item, match }: Props) {
                         Add a checkpoint
                     </MainButton>
                 </LinkStyled>
+
+                {"forwardedTo" in item ? (
+                    <LinkStyled to={`${match?.url}/forward-to-container`}>
+                        <MainButton
+                            disabled={
+                                Number(item.status) === ItemStatus.Processing
+                                    ? false
+                                    : true
+                            }
+                        >
+                            Forward to a container
+                        </MainButton>
+                    </LinkStyled>
+                ) : null}
+
                 <LinkStyled to={`${match?.url}/init-shipment`}>
                     <MainButton
                         disabled={
@@ -185,6 +202,7 @@ function ItemDetails({ item, match }: Props) {
                         Initiate shipment
                     </MainButton>
                 </LinkStyled>
+
                 <LinkStyled to={`${match?.url}/complete-shipment`}>
                     <MainButton
                         disabled={

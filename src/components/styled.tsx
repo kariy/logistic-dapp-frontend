@@ -33,8 +33,10 @@ export const SectionBreak = styled.hr`
 `;
 
 export const SectionHeader = styled.div`
-    background-color: #c5c5c5;
+    background-color: ${(props) => props.theme.colors.black};
+    color: ${(props) => props.theme.colors.white};
     border-radius: ${(props) => props.theme.rounded.md};
+    box-shadow: 0 0 15px #c0c0c0;
     padding: 0.8em 1.2em;
     margin-top: 1rem;
     margin-bottom: 2rem;

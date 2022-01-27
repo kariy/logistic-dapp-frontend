@@ -7,7 +7,9 @@ import ConnectWalletButton from "./ConnectWallet/ConnectWalletButton";
 import { ReactComponent as PrevPageSvg } from "../assets/svgs/prevPage.svg";
 
 const Container = styled.nav`
-    box-shadow: 0px 2px 6px rgba(151, 151, 151, 0.25);
+    background-color: ${(props) => props.theme.colors.black};
+    color: white;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
 `;
 
 const Wrapper = styled.div`
@@ -39,13 +41,13 @@ const Wrapper = styled.div`
 
     .navbar__link {
         padding: 0.3em 0;
-        color: black;
+        color: ${(props) => props.theme.colors.white};
         text-transform: uppercase;
         text-decoration: none;
     }
 
     .navbar__link--active {
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid ${(props) => props.theme.colors.white};
     }
 
     #useraddress-wrapper {
@@ -65,6 +67,7 @@ const Wrapper = styled.div`
 
     #prevPageLink {
         margin-right: 2rem;
+        color: ${(props) => props.theme.colors.white};
     }
 `;
 
@@ -80,6 +83,7 @@ const UserAddress = styled.div`
 
 const PrevPage = styled(PrevPageSvg)`
     height: 20px;
+    color: inherit;
 `;
 
 export type TNavLink = {

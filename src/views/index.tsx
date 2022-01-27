@@ -48,8 +48,10 @@ function AppViewPage() {
             <Wrapper>
                 <Title>Choose an application.</Title>
                 <ButtonWrapper>
-                    <LinkStyled to="/container-app">Container</LinkStyled>
-                    <LinkStyled to="/courier-app">Courier</LinkStyled>
+                    <LinkStyled to="/container-app">
+                        Container Company
+                    </LinkStyled>
+                    <LinkStyled to="/courier-app">Courier Company</LinkStyled>
                 </ButtonWrapper>
             </Wrapper>
         </Container>

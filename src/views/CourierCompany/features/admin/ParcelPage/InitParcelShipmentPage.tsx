@@ -3,9 +3,9 @@ import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
 
 import { FormSubmitHandler } from "../../../../../types/form";
-import AddCheckpointForm, {
+import CheckpointForm, {
     TCheckpointFieldValues,
-} from "../../../../components/Checkpoint/AddCheckpointForm";
+} from "../../../../components/Checkpoint/CheckpointForm";
 import ItemFunction from "../../../../components/ItemFunction";
 
 const FormWrapper = styled.div`
@@ -53,7 +53,7 @@ function InitParcelShipmentPage({ match }: Props) {
         >
             <FormWrapper>
                 <div>Checkpoint</div>
-                <AddCheckpointForm
+                <CheckpointForm
                     onSubmit={handleSubmit}
                     buttonText="Initiate shipment"
                 />

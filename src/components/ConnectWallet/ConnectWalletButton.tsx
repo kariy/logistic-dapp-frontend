@@ -4,6 +4,7 @@ import { useWeb3 } from "../../providers/Web3Provider";
 
 const Button = styled.button`
     font-weight: 600;
+    background-color: #e9e9e9;
 `;
 
 interface Props {

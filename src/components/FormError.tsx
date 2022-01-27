@@ -3,16 +3,18 @@ import styled from "styled-components";
 // @ts-ignore
 import { ReactComponent as WarningSvg } from "../assets/svgs/warning.svg";
 
-const Container = styled.p`
+const Container = styled.div`
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
     color: ${(props) => props.theme.colors.error};
     font-style: italic;
     font-weight: 500;
+    font-size: 0.85em;
 `;
 
 const Warning = styled(WarningSvg)`
-    height: 15px;
+    height: 13px;
     margin-right: 10px;
     color: ${(props) => props.theme.colors.error};
 `;

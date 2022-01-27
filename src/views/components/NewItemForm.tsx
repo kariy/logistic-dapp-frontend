@@ -10,6 +10,9 @@ import {
 } from "../../components/styled";
 import { Country } from "../../types";
 import { ItemType, ShipmentType } from "../../types/item";
+import { ErrorMessage } from "@hookform/error-message";
+import { useWeb3 } from "../../providers/Web3Provider";
+import FormError from "../../components/FormError";
 
 const Container = styled.div``;
 
@@ -31,7 +34,7 @@ const Form = styled.form`
         margin-bottom: 0.8rem;
     }
 
-    .radio-card {
+    ${Label}.radio-card {
         font-weight: 500;
         display: flex;
         justify-content: space-between;
@@ -82,15 +85,27 @@ function NewItemForm({
     onSubmit,
     buttonText = "Create",
 }: Props) {
-    const { register, handleSubmit, reset, watch, setValue } = useForm();
+    const web3 = useWeb3();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm();
     const shipmentType = watch("shipmentType");
 
     const submitCallback = (data: any) => onSubmit(data, reset);
 
     useEffect(() => {
         if (Number(shipmentType) === ShipmentType.Domestic)
-            setValue("countryDestination", 5);
+            setValue("countryDestination", 1);
     }, [shipmentType, setValue]);
+
+    // useEffect(() => {
+    //     console.log("errors", formState.errors);
+    // }, [formState]);
 
     return (
         <Container>
@@ -104,11 +119,7 @@ function NewItemForm({
                             Domestic
                             <input
                                 {...register("shipmentType", {
-                                    required: {
-                                        message:
-                                            "Please select a shipment type!",
-                                        value: true,
-                                    },
+                                    required: true,
                                     valueAsNumber: true,
                                 })}
                                 type="radio"
@@ -120,11 +131,7 @@ function NewItemForm({
                             International
                             <input
                                 {...register("shipmentType", {
-                                    required: {
-                                        message:
-                                            "Please select a shipment type!",
-                                        value: true,
-                                    },
+                                    required: true,
                                     valueAsNumber: true,
                                 })}
                                 type="radio"
@@ -139,11 +146,7 @@ function NewItemForm({
                     <Input
                         as="select"
                         {...register("countryDestination", {
-                            required: {
-                                message:
-                                    "Please select the destination country!",
-                                value: true,
-                            },
+                            required: true,
                             valueAsNumber: true,
                         })}
                         disabled={
@@ -154,20 +157,20 @@ function NewItemForm({
                         }
                     >
                         {Number(shipmentType) === ShipmentType.Domestic ? (
-                            <option value="5" defaultChecked>
-                                China
+                            <option value="1" selected>
+                                Malaysia
                             </option>
                         ) : Number(shipmentType) ===
                           ShipmentType.International ? (
                             <>
                                 <option value="">Select a country</option>
-                                <option value="1">Malaysia</option>
                                 <option value="2">Singapore</option>
                                 <option value="3">Thailand</option>
                                 <option value="4">Indonesia</option>
+                                <option value="5">China</option>
                             </>
                         ) : (
-                            <option>Select a shipment type</option>
+                            <option value="">Select a shipment type</option>
                         )}
                     </Input>
                 </Label>
@@ -175,10 +178,7 @@ function NewItemForm({
                     Location name
                     <Input
                         {...register("locName", {
-                            required: {
-                                message: "Location name cannot be empty!",
-                                value: true,
-                            },
+                            required: true,
                         })}
                         autoComplete="off"
                         type="text"
@@ -188,15 +188,23 @@ function NewItemForm({
                     Receiver address
                     <Input
                         {...register("receiverAddress", {
-                            required: {
-                                message: "Receiver address cannot be empty!",
-                                value: true,
-                            },
+                            required: true,
+                            validate: (value) =>
+                                web3?.utils.isAddress(value) ||
+                                "Please insert a valid Ethereum address!",
                         })}
                         autoComplete="off"
                         type="text"
                     />
                 </Label>
+
+                <ErrorMessage
+                    name="receiverAddress"
+                    errors={errors}
+                    render={({ message }) =>
+                        message ? <FormError message={message} /> : null
+                    }
+                />
 
                 {itemType === "Parcel" ? (
                     <>
@@ -204,30 +212,30 @@ function NewItemForm({
                             Payee address
                             <Input
                                 {...register("parcelPayee", {
-                                    required: {
-                                        message:
-                                            "Payee address cannot be empty!",
-                                        value: true,
-                                    },
+                                    required: true,
+                                    validate: (value) =>
+                                        web3?.utils.isAddress(value) ||
+                                        "Please insert a valid Ethereum address!",
                                 })}
                                 autoComplete="off"
                                 type="text"
                             />
                         </Label>
+
+                        <ErrorMessage
+                            name="parcelPayee"
+                            errors={errors}
+                            render={({ message }) =>
+                                message ? <FormError message={message} /> : null
+                            }
+                        />
                         <Label>
                             Parcel price{" "}
                             <span className="label-remarks">(in Ether)</span>
                             <Input
                                 {...register("parcelPrice", {
-                                    required: {
-                                        message:
-                                            "Parcel price cannot be empty!",
-                                        value: true,
-                                    },
-                                    min: {
-                                        message: "Price cannot be less than 0!",
-                                        value: 0,
-                                    },
+                                    required: true,
+                                    min: 0,
                                     valueAsNumber: true,
                                 })}
                                 type="number"
