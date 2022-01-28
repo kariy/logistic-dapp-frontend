@@ -13,7 +13,7 @@ function App() {
             {checkWeb3() ? (
                 <MainProvider>
                     <MainRouter />
-                    <ToastContainer position="bottom-left" />
+                    <ToastContainer position="bottom-left" theme="colored" />
                 </MainProvider>
             ) : (
                 // https://stackoverflow.com/questions/51971449/react-warning-computedmatch-regarding-some-case-issues
