@@ -1,55 +1,23 @@
-import { useCallback, useState } from "react";
-import { SubmitHandler } from "react-hook-form";
-
-import QueryRenderProp from "../../../../components/QueryRenderProp";
-import { SectionBreak } from "../../../../components/styled";
 import { useContract } from "../../../../providers/ContractProvider";
-import { Checkpoint } from "../../../../types";
-import MainPage from "../../../components/MainPage";
-import TrackProgressForm from "../../../components/TrackProgressForm";
-import TrackSearchForm from "../../../components/TrackSearchForm";
+
+import ItemTrackTrace from "../../../components/Track/ItemTrackPage";
 
 interface Props {
     match: any;
 }
 
 function ContainerTrackPage({ match }: Props) {
-    const [id, setId] = useState<number | undefined>(match.params.id);
-    const container = useContract()?.container;
+    const contract = useContract()?.container;
 
-    const queryFn = useCallback(
-        () => container.methods.getCheckpointsOf(id).call(),
-        [container, id]
-    );
-
-    const onSubmit: SubmitHandler<{
-        id: number;
-    }> = function (data) {
-        setId(data.id);
-    };
+    const queryFn = (id?: number) =>
+        contract.methods.getCheckpointsOf(id).call();
 
     return (
-        <MainPage title="Track & Trace">
-            <TrackSearchForm
-                defaultValue={id || ""}
-                onSubmit={onSubmit}
-                placeholder="Enter container ID here"
-            />
-            <SectionBreak />
-            {id ? (
-                <QueryRenderProp<Checkpoint[]>
-                    queryFn={queryFn}
-                    queryKey={`track_${id}`}
-                    render={({ data }) =>
-                        data ? (
-                            <TrackProgressForm checkpoints={data} />
-                        ) : (
-                            <div>No data</div>
-                        )
-                    }
-                />
-            ) : null}
-        </MainPage>
+        <ItemTrackTrace
+            inputPlaceholder="Enter container ID"
+            initInputValue={match.params.id}
+            queryFn={queryFn}
+        />
     );
 }
 

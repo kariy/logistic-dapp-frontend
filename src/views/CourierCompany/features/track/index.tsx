@@ -1,55 +1,24 @@
-import { useCallback, useState } from "react";
-import { SubmitHandler } from "react-hook-form";
-
-import QueryRenderProp from "../../../../components/QueryRenderProp";
-import { SectionBreak } from "../../../../components/styled";
 import { useContract } from "../../../../providers/ContractProvider";
-import MainPage from "../../../components/MainPage";
-import TrackProgressForm from "../../../components/TrackProgressForm";
-import TrackSearchForm from "../../../components/TrackSearchForm";
+
+import ItemTrackTrace from "../../../components/Track/ItemTrackPage";
 
 interface Props {
     match: any;
 }
 
-function CourierTrackPage({ match }: Props) {
-    const [id, setId] = useState<number | undefined>(match.params.id);
-    const courier = useContract()?.courier;
+function ContainerTrackPage({ match }: Props) {
+    const contract = useContract()?.courier;
 
-    const queryFn = useCallback(
-        () => courier.methods.getCheckpointsOf(id).call(),
-        [courier, id]
-    );
-
-    const onSubmit: SubmitHandler<{
-        id: number;
-    }> = function (data) {
-        setId(data.id);
-    };
+    const queryFn = (id?: number) =>
+        contract.methods.getCheckpointsOf(id).call();
 
     return (
-        <MainPage title="Track & Trace">
-            <TrackSearchForm
-                defaultValue={id || ""}
-                onSubmit={onSubmit}
-                placeholder="Enter parcel ID here"
-            />
-            <SectionBreak />
-            {id ? (
-                <QueryRenderProp
-                    queryFn={queryFn}
-                    queryKey={`track_${id}`}
-                    render={({ data }) =>
-                        data ? (
-                            <TrackProgressForm checkpoints={data} />
-                        ) : (
-                            <div style={{ textAlign: "center" }}>No data</div>
-                        )
-                    }
-                />
-            ) : null}
-        </MainPage>
+        <ItemTrackTrace
+            inputPlaceholder="Enter parcel ID"
+            initInputValue={match.params.id}
+            queryFn={queryFn}
+        />
     );
 }
 
-export default CourierTrackPage;
+export default ContainerTrackPage;
