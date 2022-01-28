@@ -11,12 +11,15 @@ import styled from "styled-components";
 import { useParceListToggle } from "./ParcelListToggleProvider";
 import ContainerParcelList from "./ContainerParcelList";
 import ItemDetailsHeader from "../../../../components/ItemDetailsHeader";
+import { ClipLoader } from "../../../../../components/Loaders";
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 300px;
+    /* outline: 1px solid blue; */
 `;
 
 interface Props {
@@ -37,7 +40,7 @@ function ContainerDetailsPage({ match }: Props) {
         <QueryRenderProp<Container>
             queryFn={queryFn}
             queryKey={`query_container_${match.params.id}`}
-            render={({ data, isLoading, isError }) => (
+            render={({ data, isLoading }) => (
                 <>
                     <SubPage
                         header={
@@ -59,11 +62,9 @@ function ContainerDetailsPage({ match }: Props) {
                                     ) : null}
                                 </>
                             ) : isLoading ? (
-                                <div>Loading</div>
-                            ) : isError ? (
-                                <div>Not found</div>
+                                <ClipLoader />
                             ) : (
-                                <></>
+                                <div>Not found</div>
                             )}
                         </ContentWrapper>
                     </SubPage>

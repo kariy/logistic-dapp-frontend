@@ -9,12 +9,14 @@ import { Parcel } from "../../../../../types";
 import styled from "styled-components";
 
 import ItemDetailsHeader from "../../../../components/ItemDetailsHeader";
+import { ClipLoader } from "../../../../../components/Loaders";
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 300px;
 `;
 
 interface Props {
@@ -33,7 +35,7 @@ function ParcelDetailsPage({ match }: Props) {
         <QueryRenderProp<Parcel>
             queryFn={queryFn}
             queryKey={`query_container_${match.params.id}`}
-            render={({ data }) => (
+            render={({ data, isLoading }) => (
                 <SubPage
                     header={
                         <ItemDetailsHeader id={match.params.id} type="Parcel" />
@@ -42,6 +44,8 @@ function ParcelDetailsPage({ match }: Props) {
                     <ContentWrapper>
                         {data ? (
                             <ItemDetails item={data} match={match} />
+                        ) : isLoading ? (
+                            <ClipLoader />
                         ) : (
                             <div>Not found</div>
                         )}
