@@ -19,26 +19,30 @@ const ContentWrapper = styled.div`
     justify-content: center;
 `;
 
-function ContainerDetailsPage(props: any) {
+interface Props {
+    match: any;
+}
+
+function ContainerDetailsPage({ match }: Props) {
     const popup = useParceListToggle();
 
     const contract = useContract()?.container;
 
     const queryFn = useCallback(
-        () => contract.methods.getContainerOf(props.match.params.id).call(),
-        [contract, props]
+        () => contract.methods.getContainerOf(match.params.id).call(),
+        [contract, match]
     );
 
     return (
         <QueryRenderProp<Container>
             queryFn={queryFn}
-            queryKey="containerData"
+            queryKey={`query_container_${match.params.id}`}
             render={({ data, isLoading, isError }) => (
                 <>
                     <SubPage
                         header={
                             <ItemDetailsHeader
-                                id={props.match.params.id}
+                                id={match.params.id}
                                 type="Container"
                             />
                         }
@@ -46,10 +50,7 @@ function ContainerDetailsPage(props: any) {
                         <ContentWrapper>
                             {data ? (
                                 <>
-                                    <ItemDetails
-                                        item={data}
-                                        match={props.match}
-                                    />
+                                    <ItemDetails item={data} match={match} />
 
                                     {popup?.state ? (
                                         <ContainerParcelList

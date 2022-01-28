@@ -40,11 +40,11 @@ function ContainerTrackPage({ match }: Props) {
                 <QueryRenderProp<Checkpoint[]>
                     queryFn={queryFn}
                     queryKey={`track_${id}`}
-                    render={({ data, isLoading }) =>
+                    render={({ data }) =>
                         data ? (
                             <TrackProgressForm checkpoints={data} />
                         ) : (
-                            <div>Error</div>
+                            <div>No data</div>
                         )
                     }
                 />

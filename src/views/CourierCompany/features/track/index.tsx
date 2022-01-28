@@ -39,9 +39,13 @@ function CourierTrackPage({ match }: Props) {
                 <QueryRenderProp
                     queryFn={queryFn}
                     queryKey={`track_${id}`}
-                    render={({ data }) => (
-                        <TrackProgressForm checkpoints={data} />
-                    )}
+                    render={({ data }) =>
+                        data ? (
+                            <TrackProgressForm checkpoints={data} />
+                        ) : (
+                            <div style={{ textAlign: "center" }}>No data</div>
+                        )
+                    }
                 />
             ) : null}
         </MainPage>

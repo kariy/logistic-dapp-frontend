@@ -17,36 +17,33 @@ const ContentWrapper = styled.div`
     justify-content: center;
 `;
 
-function ParcelDetailsPage(props: any) {
+interface Props {
+    match: any;
+}
+
+function ParcelDetailsPage({ match }: Props) {
     const contract = useContract()?.courier;
 
     const queryFn = useCallback(
-        () => contract.methods.getItemOf(props.match.params.id).call(),
-        [contract, props]
+        () => contract.methods.getItemOf(match.params.id).call(),
+        [contract, match]
     );
 
     return (
         <QueryRenderProp<Parcel>
             queryFn={queryFn}
-            queryKey="parcelData"
-            render={({ data, isLoading, isError }) => (
+            queryKey={`query_container_${match.params.id}`}
+            render={({ data }) => (
                 <SubPage
                     header={
-                        <ItemDetailsHeader
-                            id={props.match.params.id}
-                            type="Parcel"
-                        />
+                        <ItemDetailsHeader id={match.params.id} type="Parcel" />
                     }
                 >
                     <ContentWrapper>
                         {data ? (
-                            <ItemDetails item={data} match={props.match} />
-                        ) : isLoading ? (
-                            <div>Loading</div>
-                        ) : isError ? (
-                            <div>Not found</div>
+                            <ItemDetails item={data} match={match} />
                         ) : (
-                            <></>
+                            <div>Not found</div>
                         )}
                     </ContentWrapper>
                 </SubPage>
