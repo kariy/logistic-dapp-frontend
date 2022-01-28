@@ -11,34 +11,41 @@ import styled from "styled-components";
 import { useParceListToggle } from "./ParcelListToggleProvider";
 import ContainerParcelList from "./ContainerParcelList";
 import ItemDetailsHeader from "../../../../components/ItemDetailsHeader";
+import { ClipLoader } from "../../../../../components/Loaders";
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 300px;
+    /* outline: 1px solid blue; */
 `;
 
-function ContainerDetailsPage(props: any) {
+interface Props {
+    match: any;
+}
+
+function ContainerDetailsPage({ match }: Props) {
     const popup = useParceListToggle();
 
     const contract = useContract()?.container;
 
     const queryFn = useCallback(
-        () => contract.methods.getContainerOf(props.match.params.id).call(),
-        [contract, props]
+        () => contract.methods.getContainerOf(match.params.id).call(),
+        [contract, match]
     );
 
     return (
         <QueryRenderProp<Container>
             queryFn={queryFn}
-            queryKey="containerData"
-            render={({ data, isLoading, isError }) => (
+            queryKey={`query_container_${match.params.id}`}
+            render={({ data, isLoading }) => (
                 <>
                     <SubPage
                         header={
                             <ItemDetailsHeader
-                                id={props.match.params.id}
+                                id={match.params.id}
                                 type="Container"
                             />
                         }
@@ -46,10 +53,7 @@ function ContainerDetailsPage(props: any) {
                         <ContentWrapper>
                             {data ? (
                                 <>
-                                    <ItemDetails
-                                        item={data}
-                                        match={props.match}
-                                    />
+                                    <ItemDetails item={data} match={match} />
 
                                     {popup?.state ? (
                                         <ContainerParcelList
@@ -58,11 +62,9 @@ function ContainerDetailsPage(props: any) {
                                     ) : null}
                                 </>
                             ) : isLoading ? (
-                                <div>Loading</div>
-                            ) : isError ? (
-                                <div>Not found</div>
+                                <ClipLoader />
                             ) : (
-                                <></>
+                                <div>Not found</div>
                             )}
                         </ContentWrapper>
                     </SubPage>

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { Fragment } from "react";
+import { SectionHeader } from "../../../components/styled";
+import { Checkpoint } from "../../../types";
 
-import { Checkpoint } from "../../types/item";
-import { SectionHeader } from "../../components/styled";
-
-const Container = styled.div``;
+const Container = styled.div`
+    width: 100%;
+`;
 
 const TableWrapper = styled.div`
     min-height: 200px;
@@ -50,7 +51,7 @@ interface Props {
     checkpoints: Checkpoint[];
 }
 
-function TrackProgressForm({ checkpoints }: Props) {
+function TrackProgress({ checkpoints }: Props) {
     return (
         <Container>
             <SectionHeader>Shipment progress</SectionHeader>
@@ -86,4 +87,4 @@ function TrackProgressForm({ checkpoints }: Props) {
     );
 }
 
-export default TrackProgressForm;
+export default TrackProgress;

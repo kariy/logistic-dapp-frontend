@@ -9,44 +9,45 @@ import { Parcel } from "../../../../../types";
 import styled from "styled-components";
 
 import ItemDetailsHeader from "../../../../components/ItemDetailsHeader";
+import { ClipLoader } from "../../../../../components/Loaders";
 
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 300px;
 `;
 
-function ParcelDetailsPage(props: any) {
+interface Props {
+    match: any;
+}
+
+function ParcelDetailsPage({ match }: Props) {
     const contract = useContract()?.courier;
 
     const queryFn = useCallback(
-        () => contract.methods.getItemOf(props.match.params.id).call(),
-        [contract, props]
+        () => contract.methods.getItemOf(match.params.id).call(),
+        [contract, match]
     );
 
     return (
         <QueryRenderProp<Parcel>
             queryFn={queryFn}
-            queryKey="parcelData"
-            render={({ data, isLoading, isError }) => (
+            queryKey={`query_container_${match.params.id}`}
+            render={({ data, isLoading }) => (
                 <SubPage
                     header={
-                        <ItemDetailsHeader
-                            id={props.match.params.id}
-                            type="Parcel"
-                        />
+                        <ItemDetailsHeader id={match.params.id} type="Parcel" />
                     }
                 >
                     <ContentWrapper>
                         {data ? (
-                            <ItemDetails item={data} match={props.match} />
+                            <ItemDetails item={data} match={match} />
                         ) : isLoading ? (
-                            <div>Loading</div>
-                        ) : isError ? (
-                            <div>Not found</div>
+                            <ClipLoader />
                         ) : (
-                            <></>
+                            <div>Not found</div>
                         )}
                     </ContentWrapper>
                 </SubPage>

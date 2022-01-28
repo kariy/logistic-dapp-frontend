@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { PageHeader } from "../../../../components/styled";
 import { useContract } from "../../../../providers/ContractProvider";
 import { useUser } from "../../../../providers/UserProvider";
@@ -24,10 +25,15 @@ function NewContainerPage() {
                 data.locName
             )
             .send({ from: user?.address })
-            .then((res: any) => {
-                // handle call success here
+            .once("transactionHash", () => {
+                toast.info("Container creation request is being processed");
                 reset();
-            });
+            })
+            .once("receipt", (res: any) =>
+                toast.success(
+                    `Container ID ${res.events.NewContainer.returnValues.containerId} is successfully created`
+                )
+            );
     };
 
     return (

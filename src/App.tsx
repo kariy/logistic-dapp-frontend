@@ -1,5 +1,7 @@
 import { Fragment } from "react";
 import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import MainRouter from "./MainRouter";
 import MainProvider from "./providers";
@@ -11,6 +13,7 @@ function App() {
             {checkWeb3() ? (
                 <MainProvider>
                     <MainRouter />
+                    <ToastContainer position="bottom-left" theme="colored" />
                 </MainProvider>
             ) : (
                 // https://stackoverflow.com/questions/51971449/react-warning-computedmatch-regarding-some-case-issues
