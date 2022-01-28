@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Input, Label } from "../../../../../components/styled";
 import { useContract } from "../../../../../providers/ContractProvider";
@@ -71,9 +72,15 @@ function ForwardParcelPage({ match }: Props) {
                 data.locName
             )
             .send({ from: user?.address })
-            .then(() => {
+            .once("transactionHash", () => {
+                toast.info(`Parcel ${match.params.id} is being forwarded`);
                 reset();
-            });
+            })
+            .once("receipt", () =>
+                toast.success(
+                    `Successfully forwarded Parcel ${match.params.id} to a container company`
+                )
+            );
     };
 
     return (
@@ -81,7 +88,13 @@ function ForwardParcelPage({ match }: Props) {
             <FormWrapper>
                 <Label title="Address of the Container Company to be forwarded to">
                     Container address
-                    <Input type="text" {...register("containerAddress")} />
+                    <Input
+                        disabled
+                        type="text"
+                        {...register("containerAddress", {
+                            value: "0x8f4f57f3f7d4f148Db6B7570FfeF583B822bBa14",
+                        })}
+                    />
                 </Label>
                 <Label>
                     Destination country

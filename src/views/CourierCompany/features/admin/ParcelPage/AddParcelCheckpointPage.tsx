@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
 import { FormSubmitHandler } from "../../../../../types/form";
@@ -27,7 +28,15 @@ function AddParcelCheckpointPage({ match }: Props) {
                 data.locName
             )
             .send({ from: user?.address })
-            .then((res: any) => reset());
+            .once("transactionHash", () => {
+                toast.info("Checkpoint addition is being processed");
+                reset();
+            })
+            .once("receipt", () =>
+                toast.success(
+                    `New checkpoint for Parcel ${match.params.id} is successfully added`
+                )
+            );
     };
 
     return (

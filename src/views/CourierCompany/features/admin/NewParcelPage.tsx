@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { PageHeader } from "../../../../components/styled";
 import { useContract } from "../../../../providers/ContractProvider";
 import { useUser } from "../../../../providers/UserProvider";
@@ -28,10 +29,15 @@ function NewParcelPage() {
                 web3?.utils.toWei(`${data.parcelPrice}`)
             )
             .send({ from: user?.address })
-            .then((res: any) => {
-                // handle call success here
+            .once("transactionHash", () => {
+                toast.info("Parcel creation request is being processed");
                 reset();
-            });
+            })
+            .once("receipt", (res: any) =>
+                toast.success(
+                    `Parcel ID ${res.events.NewItem.returnValues.itemId} is successfully created`
+                )
+            );
     };
 
     return (

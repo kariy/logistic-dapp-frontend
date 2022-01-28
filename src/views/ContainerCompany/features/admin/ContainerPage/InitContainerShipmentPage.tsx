@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { useContract } from "../../../../../providers/ContractProvider";
 import { useUser } from "../../../../../providers/UserProvider";
@@ -40,9 +41,17 @@ function InitContainerShipmentPage({ match }: Props) {
                 data.locName
             )
             .send({ from: user?.address })
-            .then(() => {
+            .once("transactionHash", () => {
+                toast.info(
+                    `Shipment initiation for Container ${match.params.id} is being processed`
+                );
                 reset();
-            });
+            })
+            .once("receipt", () =>
+                toast.success(
+                    `Successfully intiated shipment of Container ${match.params.id}`
+                )
+            );
     };
 
     return (

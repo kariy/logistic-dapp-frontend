@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Input, Label } from "../../../../../components/styled";
 import { useContract } from "../../../../../providers/ContractProvider";
@@ -74,8 +75,17 @@ function CompleteParcelShipmentPage({ match }: Props) {
                 data.locName
             )
             .send({ from: user?.address, value: parcel?.price })
-            .then(() => reset())
-            .catch(() => console.log("transaction failed lmao"));
+            .once("transactionHash", () => {
+                toast.info(
+                    `Shipment completion for Parcel ${match.params.id} is being processed`
+                );
+                reset();
+            })
+            .once("receipt", () =>
+                toast.success(
+                    `Successfully completed shipment of Parcel ${match.params.id}`
+                )
+            );
     };
 
     useEffect(() => {
