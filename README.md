@@ -1,4 +1,4 @@
-# Logistic Decentralized Web Application
+# Logistic Chain System Front End
 
 ## ✏️ About
 
