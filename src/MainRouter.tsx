@@ -1,7 +1,9 @@
 import { lazy, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
-import FallbackPage from "./components/FallbackPage";
+import LoadingPage from "./components/Fallbacks/LoadingPage";
+import PageNotFound from "./components/Fallbacks/PageNotFound";
+
 import AppViewPage from "./views";
 
 const ContainerApp = lazy(() => import("./views/ContainerCompany"));
@@ -14,13 +16,13 @@ function MainRouter() {
         <Switch>
             <Route path="/" exact component={AppViewPage} />
 
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingPage />}>
                 <Route path="/container-app" component={ContainerApp} />
 
                 <Route path="/courier-app" component={CourierApp} />
             </Suspense>
 
-            <Route path="/404" component={FallbackPage} />
+            <Route path="/404" component={PageNotFound} />
 
             <Redirect to="/404" />
         </Switch>

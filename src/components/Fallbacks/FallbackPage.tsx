@@ -17,14 +17,16 @@ const Container = styled(MaxPageContainer)`
     }
 `;
 
-function FallbackPage() {
+interface Props {
+    text?: string;
+    render?: () => JSX.Element;
+}
+
+function FallbackPage({ text = "Something went wrong.", render }: Props) {
     return (
         <PageContainer>
             <Container>
-                <div>
-                    <div>Error 404 | Page not found</div>
-                    <LinkStyled to="/">{`Return to app selector >`}</LinkStyled>
-                </div>
+                <div>{render ? render() : text}</div>
             </Container>
         </PageContainer>
     );

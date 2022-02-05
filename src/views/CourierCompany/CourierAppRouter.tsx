@@ -1,5 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { Redirect, Route, useRouteMatch } from "react-router-dom";
+
+import SuspenseHandler from "../../components/SuspenseHandler";
 import { useUser } from "../../providers/UserProvider";
 
 const CourierAdminPage = lazy(() => import("./features/admin"));
@@ -13,7 +15,7 @@ function CourierAppRouter() {
     const user = useUser();
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <SuspenseHandler>
             <Route
                 path={`${match.path}/track/:id?`}
                 component={CourierTrackPage}
@@ -34,7 +36,7 @@ function CourierAppRouter() {
                     />
                 )}
             />
-        </Suspense>
+        </SuspenseHandler>
     );
 }
 

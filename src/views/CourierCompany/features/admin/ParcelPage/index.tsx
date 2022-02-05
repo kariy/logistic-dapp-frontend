@@ -1,5 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { Route } from "react-router-dom";
+
+import SuspenseHandler from "../../../../../components/SuspenseHandler";
 
 const AddParcelCheckpointPage = lazy(() => import("./AddParcelCheckpointPage"));
 const CompleteParcelShipmentPage = lazy(
@@ -17,7 +19,7 @@ const ParcelDetailsPage = lazy(() => import("./ParcelDetailsPage"));
 
 function ParcelPage(props: any) {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <SuspenseHandler>
             <Route
                 exact
                 path={`${props.match.path}/add-checkpoint`}
@@ -43,7 +45,7 @@ function ParcelPage(props: any) {
                 path={props.match.path}
                 component={ParcelDetailsPage}
             />
-        </Suspense>
+        </SuspenseHandler>
     );
 }
 
