@@ -4,8 +4,6 @@ import { useUser } from "../../providers/UserProvider";
 
 const ContainerAdminPage = lazy(() => import("./features/admin"));
 const ContainerTrackPage = lazy(() => import("./features/track"));
-// import ContainerAdminPage from "./features/admin";
-// import ContainerTrackPage from "./features/track";
 
 function ContainerAppRouter() {
     const match = useRouteMatch();

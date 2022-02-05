@@ -7,9 +7,6 @@ import { useUser } from "../../providers/UserProvider";
 const CourierAdminPage = lazy(() => import("./features/admin"));
 const CourierTrackPage = lazy(() => import("./features/track"));
 
-// import CourierAdminPage from "./features/admin";
-// import CourierTrackPage from "./features/track";
-
 function CourierAppRouter() {
     const match = useRouteMatch();
     const user = useUser();

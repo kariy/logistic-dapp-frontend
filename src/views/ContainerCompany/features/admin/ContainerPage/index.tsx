@@ -14,10 +14,6 @@ const InitContainerShipmentPage = lazy(
     () => import("./InitContainerShipmentPage")
 );
 const ContainerDetailsPage = lazy(() => import("./ContainerDetailsPage"));
-// import AddContainerCheckpointPage from "./AddContainerCheckpointPage";
-// import CompleteContainerShipmentPage from "./CompleteContainerShipmentPage";
-// import InitContainerShipmentPage from "./InitContainerShipmentPage";
-// import ContainerDetailsPage from "./ContainerDetailsPage";
 
 function ContainerPage(props: any) {
     return (

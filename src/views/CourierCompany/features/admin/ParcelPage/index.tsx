@@ -11,12 +11,6 @@ const ForwardParcelPage = lazy(() => import("./ForwardParcelPage"));
 const InitParcelShipmentPage = lazy(() => import("./InitParcelShipmentPage"));
 const ParcelDetailsPage = lazy(() => import("./ParcelDetailsPage"));
 
-// import AddParcelCheckpointPage from "./AddParcelCheckpointPage";
-// import CompleteParcelShipmentPage from "./CompleteParcelShipmentPage";
-// import ForwardParcelPage from "./ForwardParcelPage";
-// import InitParcelShipmentPage from "./InitParcelShipmentPage";
-// import ParcelDetailsPage from "./ParcelDetailsPage";
-
 function ParcelPage(props: any) {
     return (
         <SuspenseHandler>

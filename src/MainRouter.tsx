@@ -8,8 +8,6 @@ import AppViewPage from "./views";
 
 const ContainerApp = lazy(() => import("./views/ContainerCompany"));
 const CourierApp = lazy(() => import("./views/CourierCompany"));
-// import ContainerApp from "./views/ContainerCompany";
-// import CourierApp from "./views/CourierCompany";
 
 function MainRouter() {
     return (

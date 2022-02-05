@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { MaxPageContainer, PageContainer } from "./styled";
+import { MaxPageContainer, PageContainer } from "../styled";
 
 const LinkStyled = styled(Link)``;
 
