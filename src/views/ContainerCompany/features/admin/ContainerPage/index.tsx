@@ -1,14 +1,26 @@
+import { lazy, Suspense } from "react";
 import { Route } from "react-router-dom";
 
-import AddContainerCheckpointPage from "./AddContainerCheckpointPage";
-import CompleteContainerShipmentPage from "./CompleteContainerShipmentPage";
-import InitContainerShipmentPage from "./InitContainerShipmentPage";
-import ContainerDetailsPage from "./ContainerDetailsPage";
 import { ParcelListToggleProvider } from "./ParcelListToggleProvider";
+
+const AddContainerCheckpointPage = lazy(
+    () => import("./AddContainerCheckpointPage")
+);
+const CompleteContainerShipmentPage = lazy(
+    () => import("./CompleteContainerShipmentPage")
+);
+const InitContainerShipmentPage = lazy(
+    () => import("./InitContainerShipmentPage")
+);
+const ContainerDetailsPage = lazy(() => import("./ContainerDetailsPage"));
+// import AddContainerCheckpointPage from "./AddContainerCheckpointPage";
+// import CompleteContainerShipmentPage from "./CompleteContainerShipmentPage";
+// import InitContainerShipmentPage from "./InitContainerShipmentPage";
+// import ContainerDetailsPage from "./ContainerDetailsPage";
 
 function ContainerPage(props: any) {
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             <Route
                 exact
                 path={`${props.match.path}/add-checkpoint`}
@@ -34,7 +46,7 @@ function ContainerPage(props: any) {
                     component={ContainerDetailsPage}
                 />
             </ParcelListToggleProvider>
-        </>
+        </Suspense>
     );
 }
 

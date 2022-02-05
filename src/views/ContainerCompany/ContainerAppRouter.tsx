@@ -1,15 +1,18 @@
+import { lazy, Suspense } from "react";
 import { Redirect, Route, useRouteMatch } from "react-router-dom";
 import { useUser } from "../../providers/UserProvider";
 
-import ContainerAdminPage from "./features/admin";
-import ContainerTrackPage from "./features/track";
+const ContainerAdminPage = lazy(() => import("./features/admin"));
+const ContainerTrackPage = lazy(() => import("./features/track"));
+// import ContainerAdminPage from "./features/admin";
+// import ContainerTrackPage from "./features/track";
 
 function ContainerAppRouter() {
     const match = useRouteMatch();
     const user = useUser();
 
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             <Route
                 path={`${match.path}/track/:id?`}
                 component={ContainerTrackPage}
@@ -33,7 +36,7 @@ function ContainerAppRouter() {
                     />
                 )}
             />
-        </>
+        </Suspense>
     );
 }
 
