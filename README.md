@@ -1,5 +1,9 @@
 # Logistic Chain System Front End
 
+## 🖱 Live demo
+
+The production version is deployed on Vercel. Try it [here](https://logistic-dapp-frontend.vercel.app/).
+
 ## ✏️ About
 
 This is a decentralized web application built for [Logistic Dapp Contracts](https://github.com/ammarif/logistic-dapp-contracts)
@@ -61,6 +65,3 @@ This is a decentralized web application built for [Logistic Dapp Contracts](http
 - [React.js](https://github.com/facebook/create-react-app)
 - [Web3.js](https://github.com/ChainSafe/web3.js)
 
-## 🖱 Live demo
-
-The production version is deployed on Vercel. Try it [here](https://logistic-dapp-frontend.vercel.app/).
