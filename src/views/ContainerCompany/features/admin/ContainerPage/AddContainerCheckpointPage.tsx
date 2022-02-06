@@ -12,7 +12,7 @@ interface Props {
 }
 
 function AddContainerCheckpointPage({ match }: Props) {
-    const contract = useContract()?.container;
+    const contract = useContract("Container");
     const user = useUser();
 
     const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({

@@ -28,8 +28,7 @@ interface Props {
 
 function ContainerDetailsPage({ match }: Props) {
     const popup = useParceListToggle();
-
-    const contract = useContract()?.container;
+    const contract = useContract("Container");
 
     const queryFn = useCallback(
         () => contract.methods.getContainerOf(match.params.id).call(),

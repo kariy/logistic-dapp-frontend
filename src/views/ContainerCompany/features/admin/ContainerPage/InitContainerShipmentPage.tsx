@@ -26,14 +26,14 @@ interface Props {
 }
 
 function InitContainerShipmentPage({ match }: Props) {
-    const container = useContract()?.container;
+    const contract = useContract("Container");
     const user = useUser();
 
     const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({
         data,
         reset,
     }) {
-        container.methods
+        contract.methods
             .initContainerShipment(
                 match.params.id,
                 data.status,

@@ -13,7 +13,7 @@ import PageBackButton from "../../../components/PageBackButton";
 function NewParcelPage() {
     const web3 = useWeb3();
     const user = useUser();
-    const contract = useContract()?.courier;
+    const contract = useContract("Courier");
 
     const onSubmit: NewItemSubmitHandler = function (
         data: TNewParcelFieldValues,

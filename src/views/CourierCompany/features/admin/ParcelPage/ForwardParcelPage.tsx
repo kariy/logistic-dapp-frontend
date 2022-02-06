@@ -42,7 +42,7 @@ function ForwardParcelPage({ match }: Props) {
     const containerAddrWatch = watch("containerAddress");
     const countryDestWatch = watch("countryDestination");
 
-    const contract = useContract()?.courier;
+    const contract = useContract("Courier");
     const user = useUser();
 
     const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({

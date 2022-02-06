@@ -7,7 +7,7 @@ interface Props {
 }
 
 function ContainerTrackPage({ match }: Props) {
-    const contract = useContract()?.courier;
+    const contract = useContract("Courier");
 
     const queryFn = (id?: number) =>
         contract.methods.getCheckpointsOf(id).call();

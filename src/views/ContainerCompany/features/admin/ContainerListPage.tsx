@@ -8,10 +8,10 @@ import MainPage from "../../../components/MainPage";
 
 function ContainerListPage(props: any) {
     const [ids, setIds] = useState<number[]>([]);
-    const container = useContract()?.container;
+    const contract = useContract("Container");
 
     useEffect(() => {
-        container.methods
+        contract.methods
             .getTotalContainers()
             .call()
             .then((total: number) => {
@@ -21,7 +21,7 @@ function ContainerListPage(props: any) {
 
                 setIds(newIds);
             });
-    }, [container]);
+    }, [contract]);
 
     return (
         <MainPage title="Container List">

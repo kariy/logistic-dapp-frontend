@@ -26,7 +26,7 @@ interface Props {
 }
 
 function InitParcelShipmentPage({ match }: Props) {
-    const contract = useContract()?.courier;
+    const contract = useContract("Courier");
     const user = useUser();
 
     const handleSubmit: FormSubmitHandler<TCheckpointFieldValues> = function ({

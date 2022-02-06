@@ -11,13 +11,13 @@ import PageBackButton from "../../../components/PageBackButton";
 
 function NewContainerPage() {
     const user = useUser();
-    const container = useContract()?.container;
+    const contract = useContract("Container");
 
     const onSubmit: NewItemSubmitHandler = function (
         data: TNewContainerFieldValues,
         reset
     ) {
-        container.methods
+        contract.methods
             .createContainer(
                 data.shipmentType,
                 data.countryDestination,

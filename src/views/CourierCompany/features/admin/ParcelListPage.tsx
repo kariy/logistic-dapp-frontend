@@ -8,7 +8,7 @@ import MainPage from "../../../components/MainPage";
 
 function ParcelListPage(props: any) {
     const [ids, setIds] = useState<number[]>([]);
-    const contract = useContract()?.courier;
+    const contract = useContract("Courier");
 
     useEffect(() => {
         contract.methods

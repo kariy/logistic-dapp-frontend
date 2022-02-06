@@ -110,7 +110,7 @@ interface Props {
 
 function ContainerParcelList({ containerId: id }: Props) {
     const popup = useParceListToggle();
-    const contract = useContract()?.container;
+    const contract = useContract("Container");
 
     const queryFn = useCallback(
         () => contract.methods.getItemsOf(id).call(),

@@ -27,7 +27,7 @@ interface Props {
 }
 
 function CompleteContainerShipmentPage({ match }: Props) {
-    const contract = useContract()?.container;
+    const contract = useContract("Container");
     const user = useUser();
 
     // retrieve container's receiver

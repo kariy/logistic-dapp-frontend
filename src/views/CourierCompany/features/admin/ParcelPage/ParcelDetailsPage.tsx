@@ -24,7 +24,7 @@ interface Props {
 }
 
 function ParcelDetailsPage({ match }: Props) {
-    const contract = useContract()?.courier;
+    const contract = useContract("Courier");
 
     const queryFn = useCallback(
         () => contract.methods.getItemOf(match.params.id).call(),

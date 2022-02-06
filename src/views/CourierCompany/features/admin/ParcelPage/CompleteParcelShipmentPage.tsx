@@ -53,8 +53,7 @@ function CompleteParcelShipmentPage({ match }: Props) {
 
     const web3 = useWeb3();
     const user = useUser();
-
-    const contract = useContract()?.courier;
+    const contract = useContract("Courier");
 
     // retrieve container's receiver
     const { data: parcel } = useQuery<Parcel>(
